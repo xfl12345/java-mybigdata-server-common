@@ -76,6 +76,7 @@ repositories {
 
 dependencies {
     def lombokVersion = '1.18.24'
+    def junitVersion = '5.9.0'
 
     // 注解神器 getter setter toString builder
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
@@ -95,8 +96,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.shekhargulati/strman
     api group: 'com.shekhargulati', name: 'strman', version: '0.4.0'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: $junitVersion
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: $junitVersion
 }
 
 test {
