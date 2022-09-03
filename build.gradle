@@ -1,0 +1,104 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            url 'https://jitpack.io'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring-plugin'
+        }
+    }
+}
+
+plugins {
+    id 'maven-publish'
+    id 'java-library'
+    id 'java'
+}
+
+group = 'cc.xfl12345.mybigdata'
+version = '0.0.1'
+sourceCompatibility = '17'
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << '-Xlint:unchecked'
+        options.encoding = 'UTF-8'
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    setProperty("archiveClassifier", "sources")
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourceJar
+        }
+    }
+}
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/central'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/public'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring-plugin'
+    }
+}
+
+dependencies {
+    def lombokVersion = '1.18.24'
+
+    // 注解神器 getter setter toString builder
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    api group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-beans
+    api group: 'org.springframework', name: 'spring-beans', version: '5.3.22'
+
+    // UUID generator support
+    // https://mvnrepository.com/artifact/com.fasterxml.uuid/java-uuid-generator
+    api group: 'com.fasterxml.uuid', name: 'java-uuid-generator', version: '4.0.1'
+
+    // 字符串风格转换工具
+    // https://mvnrepository.com/artifact/com.shekhargulati/strman
+    api group: 'com.shekhargulati', name: 'strman', version: '0.4.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}
