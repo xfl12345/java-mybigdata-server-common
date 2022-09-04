@@ -47,9 +47,6 @@ task sourceJar(type: Jar) {
 }
 
 publishing {
-    repositories {
-        mavenLocal()
-    }
     publications {
         maven(MavenPublication) {
             from components.java
