@@ -104,7 +104,7 @@ dependencies {
         testImplementation platform(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
         testAnnotationProcessor platform(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
-        def depsParentVersion = '381bdfe9de'
+        def depsParentVersion = 'e4af43463a'
         api platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
         annotationProcessor platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
         testAnnotationProcessor platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
