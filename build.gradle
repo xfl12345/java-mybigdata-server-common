@@ -117,7 +117,7 @@ dependencies {
         testImplementation platform(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
         testAnnotationProcessor platform(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
-        def depsParentVersion = 'e4af43463a'
+        def depsParentVersion = '20fcdd3f8d'
         api platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
         annotationProcessor platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
         testAnnotationProcessor platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
@@ -130,6 +130,13 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok'
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
     testImplementation group: 'org.projectlombok', name: 'lombok'
+
+    // javax
+    // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+    api group: 'javax.persistence', name: 'javax.persistence-api'
+
+    // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+    api group: 'javax.annotation', name: 'javax.annotation-api'
 
     // Spring
     // https://mvnrepository.com/artifact/org.springframework/spring-beans
