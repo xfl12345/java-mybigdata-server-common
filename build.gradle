@@ -117,7 +117,7 @@ dependencies {
         testImplementation platform(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
         testAnnotationProcessor platform(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
-        def depsParentVersion = '20fcdd3f8d'
+        def depsParentVersion = '513d8adec4'
         api platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
         annotationProcessor platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
         testAnnotationProcessor platform(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
@@ -154,6 +154,7 @@ dependencies {
     api group: 'com.alibaba.fastjson2', name: 'fastjson2'
 
     // Slf4j API
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     api group: 'org.slf4j', name: 'slf4j-api'
 
     // UUID generator support
