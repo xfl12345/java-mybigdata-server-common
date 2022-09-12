@@ -131,17 +131,25 @@ dependencies {
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
     testImplementation group: 'org.projectlombok', name: 'lombok'
 
-    // Spring 基础包
+    // Spring
     // https://mvnrepository.com/artifact/org.springframework/spring-beans
     api group: 'org.springframework', name: 'spring-beans'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-web
     api group: 'org.springframework', name: 'spring-web'
 
-    // // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging
-    // api group: 'org.springframework.boot', name: 'spring-boot-starter-logging'
+    // Apache commons
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    api group: 'commons-codec', name: 'commons-codec'
 
-    // UUID generator support (And Slf4j)
+    // JSON support
+    // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
+    api group: 'com.alibaba.fastjson2', name: 'fastjson2'
+
+    // Slf4j API
+    api group: 'org.slf4j', name: 'slf4j-api'
+
+    // UUID generator support
     // https://mvnrepository.com/artifact/com.fasterxml.uuid/java-uuid-generator
     api group: 'com.fasterxml.uuid', name: 'java-uuid-generator'
 
