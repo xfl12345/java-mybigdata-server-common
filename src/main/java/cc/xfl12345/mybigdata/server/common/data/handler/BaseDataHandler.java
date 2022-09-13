@@ -1,6 +1,7 @@
 package cc.xfl12345.mybigdata.server.common.data.handler;
 
 
+import cc.xfl12345.mybigdata.server.common.appconst.AppConst;
 import cc.xfl12345.mybigdata.server.common.appconst.CURD;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataHandlerInterceptor;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataHandlerInterceptorManager;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BaseDataHandler implements InitializingBean {
-    protected String fieldCanNotBeNullMessageTemplate = "Property [%s] can not be null!";
+    protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
 
     @Override
     public void afterPropertiesSet() throws Exception {
