@@ -122,11 +122,11 @@ dependencies {
         testRuntimeClasspath platform(myDependencyParent)
     }
 
+    String depsParentVersion = '0.0.1'
     if (isLocalDevMode) {
-        def depsParentVersion = '0.0.1'
         applyPlatform2All(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
-        def depsParentVersion = '513d8adec4'
+        depsParentVersion = 'b6a6d54f71'
         applyPlatform2All(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
     }
 
