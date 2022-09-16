@@ -126,7 +126,7 @@ dependencies {
     if (isLocalDevMode) {
         applyPlatform2All(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
-        depsParentVersion = 'b6a6d54f71'
+        depsParentVersion = 'ad2e00850d'
         applyPlatform2All(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
     }
 
