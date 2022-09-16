@@ -37,4 +37,35 @@ public abstract class SingleTableDataHandler<ValueType> extends BaseDataHandler 
             return null;
         });
     }
+
+    public Object insertAndReturnId(ValueType value) throws Exception {
+        return insertAndReturnId.execute(value);
+    }
+
+    public Object insert(ValueType value) throws Exception {
+        return insert.execute(value);
+    }
+
+    public Object insertBatch(List<ValueType> values) throws Exception {
+        return insertBatch.execute(values);
+    }
+
+    public Object selectId(ValueType value) throws Exception {
+        return selectId.execute(value);
+    }
+
+    public Object selectById(Object globalId) throws Exception {
+        return selectById.execute(globalId);
+    }
+
+    public void updateById(ValueType value, Object globalId) throws Exception {
+        IdAndValue<ValueType> idAndValue = new IdAndValue<>();
+        idAndValue.id = globalId;
+        idAndValue.value = value;
+        updateById.execute(idAndValue);
+    }
+
+    public void deleteById(Object globalId) throws Exception {
+        deleteById.execute(globalId);
+    }
 }

@@ -76,30 +76,30 @@ public class BaseDataHandler implements InitializingBean {
         getManagers(interceptorType).forEach(item -> item.remove(indexOfInterceptor));
     }
 
-    public final CopyOnWriteArrayList<DataHandlerInterceptorManager> inserts;
-    public final CopyOnWriteArrayList<DataHandlerInterceptorManager> selects;
-    public final CopyOnWriteArrayList<DataHandlerInterceptorManager> updates;
-    public final CopyOnWriteArrayList<DataHandlerInterceptorManager> deletes;
+    protected final CopyOnWriteArrayList<DataHandlerInterceptorManager> inserts;
+    protected final CopyOnWriteArrayList<DataHandlerInterceptorManager> selects;
+    protected final CopyOnWriteArrayList<DataHandlerInterceptorManager> updates;
+    protected final CopyOnWriteArrayList<DataHandlerInterceptorManager> deletes;
 
 
-    public final DataHandlerInterceptorManager insertAndReturnId =
+    protected final DataHandlerInterceptorManager insertAndReturnId =
         new DataHandlerInterceptorManager();
 
-    public final DataHandlerInterceptorManager insert =
+    protected final DataHandlerInterceptorManager insert =
         new DataHandlerInterceptorManager();
 
-    public final DataHandlerInterceptorManager insertBatch =
+    protected final DataHandlerInterceptorManager insertBatch =
         new DataHandlerInterceptorManager();
 
-    public final DataHandlerInterceptorManager selectId =
+    protected final DataHandlerInterceptorManager selectId =
         new DataHandlerInterceptorManager();
 
-    public final DataHandlerInterceptorManager selectById =
+    protected final DataHandlerInterceptorManager selectById =
         new DataHandlerInterceptorManager();
 
-    public final DataHandlerInterceptorManager updateById =
+    protected final DataHandlerInterceptorManager updateById =
         new DataHandlerInterceptorManager();
 
-    public final DataHandlerInterceptorManager deleteById =
+    protected final DataHandlerInterceptorManager deleteById =
         new DataHandlerInterceptorManager();
 }
