@@ -50,4 +50,8 @@ public class TableOperationException extends RuntimeException {
     public String getTableName() {
         return tableName;
     }
+
+    public long getAffectedRowsCount() {
+        return affectedRowsCount;
+    }
 }
