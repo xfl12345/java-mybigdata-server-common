@@ -31,4 +31,10 @@ public interface DatabaseViewer {
      * @return 有限范围之内的数据
      */
     List<Object> getTableContent(String tableName, long offset, long limit);
+
+    /**
+     * 获取 APP 所有 数据库 DataSource ，查看底层驱动情况。
+     * @return APP 底层使用的 所有数据库 DataSource
+     */
+    List<Object> getAllDataSourceInfos();
 }
