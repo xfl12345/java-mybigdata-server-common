@@ -7,11 +7,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface AdvanceSearchMapper {
-    public List<IdAndValue<String>> selectStringByPrefix(String prefix);
+    List<IdAndValue<String>> selectStringByPrefix(String prefix);
 
-    public List<IdAndValue<BigDecimal>> selectNumberByPrefix(String prefix);
+    List<IdAndValue<BigDecimal>> selectNumberByPrefix(String prefix);
 
-    public List<IdAndValue<BigDecimal>> selectNumberByPrefix(Integer prefix);
+    List<IdAndValue<BigDecimal>> selectNumberByPrefix(Integer prefix);
 
-    public List<Object> selectByCondition(SingleTableCondition condition);
+    List<Object> selectByCondition(SingleTableCondition condition);
 }
