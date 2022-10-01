@@ -18,5 +18,5 @@ public class DbDataSourceInfo {
 
     @Getter
     @Setter
-    private String driverClassName;
+    private String driverName;
 }
