@@ -1,5 +1,7 @@
 package cc.xfl12345.mybigdata.server.common.web.mapper;
 
+import cc.xfl12345.mybigdata.server.common.web.pojo.DbDataSourceInfo;
+
 import java.util.List;
 
 public interface DatabaseViewer {
@@ -36,5 +38,5 @@ public interface DatabaseViewer {
      * 获取 APP 所有 数据库 DataSource ，查看底层驱动情况。
      * @return APP 底层使用的 所有数据库 DataSource
      */
-    List<Object> getAllDataSourceInfos();
+    List<DbDataSourceInfo> getAllDataSourceInfos();
 }
