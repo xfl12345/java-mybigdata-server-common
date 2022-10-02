@@ -1,4 +1,6 @@
 package cc.xfl12345.mybigdata.server.common.data.source;
 
-public interface JsonSchemaSource {
+import cc.xfl12345.mybigdata.server.common.pojo.CommonTableSchemaRecord;
+
+public interface JsonSchemaSource extends DataSource<CommonTableSchemaRecord> {
 }

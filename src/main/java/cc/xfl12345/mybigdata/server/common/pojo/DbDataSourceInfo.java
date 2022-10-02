@@ -1,4 +1,4 @@
-package cc.xfl12345.mybigdata.server.common.web.pojo;
+package cc.xfl12345.mybigdata.server.common.pojo;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
-package cc.xfl12345.mybigdata.server.common.web.mapper;
+package cc.xfl12345.mybigdata.server.common.api;
 
-import cc.xfl12345.mybigdata.server.common.web.pojo.DbDataSourceInfo;
+import cc.xfl12345.mybigdata.server.common.pojo.DbDataSourceInfo;
 
 import java.util.List;
 

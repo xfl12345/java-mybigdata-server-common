@@ -1,4 +1,4 @@
-package cc.xfl12345.mybigdata.server.common.web.mapper;
+package cc.xfl12345.mybigdata.server.common.api;
 
 import cc.xfl12345.mybigdata.server.common.data.condition.SingleTableCondition;
 import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;

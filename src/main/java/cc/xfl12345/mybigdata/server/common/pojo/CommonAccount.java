@@ -1,4 +1,4 @@
-package cc.xfl12345.mybigdata.server.common.web.pojo;
+package cc.xfl12345.mybigdata.server.common.pojo;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 表名：auth_account
  */
 @lombok.Data
-public class Account implements Cloneable, Serializable {
+public class CommonAccount implements Cloneable, Serializable {
     /**
      * 账号ID
      */
@@ -32,7 +32,7 @@ public class Account implements Cloneable, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Account clone() throws CloneNotSupportedException {
-        return (Account) super.clone();
+    public CommonAccount clone() throws CloneNotSupportedException {
+        return (CommonAccount) super.clone();
     }
 }

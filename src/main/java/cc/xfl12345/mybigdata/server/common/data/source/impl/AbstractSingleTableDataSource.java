@@ -6,7 +6,7 @@ import cc.xfl12345.mybigdata.server.common.database.mapper.TableNoConditionMappe
 
 import java.util.List;
 
-public abstract class SingleTableDataSource<ValueType, PojoType> implements DataSource<ValueType> {
+public abstract class AbstractSingleTableDataSource<ValueType, PojoType> implements DataSource<ValueType> {
     public abstract TableNoConditionMapper<PojoType> getMapper();
 
     protected abstract String[] getSelectContentFieldOnly();
