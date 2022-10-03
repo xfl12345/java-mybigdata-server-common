@@ -22,24 +22,24 @@ public class TableDataException extends RuntimeException {
 
     protected String tableName;
 
-    protected Long[] globalIds;
+    protected Object[] globalIds;
 
     protected String[] uuids;
 
-    public TableDataException(String message, Long[] globalIds, String tableName) {
+    public TableDataException(String message, Object[] globalIds, String tableName) {
         super(message);
         this.globalIds = globalIds;
         this.tableName = tableName;
     }
 
-    public TableDataException(String message, Long[] globalIds, String[] uuids, String tableName) {
+    public TableDataException(String message, Object[] globalIds, String[] uuids, String tableName) {
         super(message);
         this.globalIds = globalIds;
         this.uuids = uuids;
         this.tableName = tableName;
     }
 
-    public Long[] getGlobalIds() {
+    public Object[] getGlobalIds() {
         return globalIds;
     }
 
