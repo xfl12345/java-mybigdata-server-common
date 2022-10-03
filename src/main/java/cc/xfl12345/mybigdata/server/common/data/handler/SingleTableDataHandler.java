@@ -12,16 +12,14 @@ public abstract class SingleTableDataHandler<Value> extends BaseDataHandler<Valu
     @Setter
     protected DataSource<Value> dataSource;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
         if (dataSource == null) {
             throw new IllegalArgumentException(fieldCanNotBeNullMessageTemplate.formatted("dataSource"));
         }
-    }
 
-    @SuppressWarnings("unchecked")
-    public SingleTableDataHandler() {
         insertAndReturnId.setDefaultAction(value -> dataSource.insertAndReturnId((Value) value));
         insert.setDefaultAction(value -> dataSource.insert((Value) value));
         insertBatch.setDefaultAction(param -> dataSource.insertBatch((List<Value>) param));
