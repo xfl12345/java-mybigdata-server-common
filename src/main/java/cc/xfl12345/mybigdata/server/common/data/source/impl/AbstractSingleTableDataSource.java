@@ -13,12 +13,16 @@ import java.util.List;
 public abstract class AbstractSingleTableDataSource<ValueType, PojoType> implements DataSource<ValueType>, InitializingBean {
     @Getter
     @Setter
+    protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
+
+    @Getter
+    @Setter
     protected TableNoConditionMapper<PojoType> mapper;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         if (mapper == null) {
-            throw new IllegalArgumentException(AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE.formatted("mapper"));
+            throw new IllegalArgumentException(fieldCanNotBeNullMessageTemplate.formatted("mapper"));
         }
     }
 
