@@ -5,11 +5,13 @@ import cc.xfl12345.mybigdata.server.common.appconst.AppConst;
 import cc.xfl12345.mybigdata.server.common.appconst.CURD;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataHandlerInterceptor;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataHandlerInterceptorManager;
+import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class BaseDataHandler implements InitializingBean {
+public class BaseDataHandler<Value> implements InitializingBean {
     protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
 
     @Override
@@ -102,4 +104,37 @@ public class BaseDataHandler implements InitializingBean {
 
     protected final DataHandlerInterceptorManager deleteById =
         new DataHandlerInterceptorManager();
+
+
+
+    public Object insertAndReturnId(Value value) throws Exception {
+        return insertAndReturnId.execute(value);
+    }
+
+    public Object insert(Value value) throws Exception {
+        return insert.execute(value);
+    }
+
+    public Object insertBatch(List<Value> values) throws Exception {
+        return insertBatch.execute(values);
+    }
+
+    public Object selectId(Value value) throws Exception {
+        return selectId.execute(value);
+    }
+
+    public Object selectById(Object globalId) throws Exception {
+        return selectById.execute(globalId);
+    }
+
+    public void updateById(Value value, Object globalId) throws Exception {
+        IdAndValue<Value> idAndValue = new IdAndValue<>();
+        idAndValue.id = globalId;
+        idAndValue.value = value;
+        updateById.execute(idAndValue);
+    }
+
+    public void deleteById(Object globalId) throws Exception {
+        deleteById.execute(globalId);
+    }
 }
