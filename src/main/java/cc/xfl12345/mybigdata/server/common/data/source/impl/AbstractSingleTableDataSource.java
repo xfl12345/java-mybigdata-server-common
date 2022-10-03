@@ -1,13 +1,26 @@
 package cc.xfl12345.mybigdata.server.common.data.source.impl;
 
 
+import cc.xfl12345.mybigdata.server.common.appconst.AppConst;
 import cc.xfl12345.mybigdata.server.common.data.source.DataSource;
 import cc.xfl12345.mybigdata.server.common.database.mapper.TableNoConditionMapper;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 
-public abstract class AbstractSingleTableDataSource<ValueType, PojoType> implements DataSource<ValueType> {
-    public abstract TableNoConditionMapper<PojoType> getMapper();
+public abstract class AbstractSingleTableDataSource<ValueType, PojoType> implements DataSource<ValueType>, InitializingBean {
+    @Getter
+    @Setter
+    protected TableNoConditionMapper<PojoType> mapper;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (mapper == null) {
+            throw new IllegalArgumentException(AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE.formatted("mapper"));
+        }
+    }
 
     protected abstract String[] getSelectContentFieldOnly();
 
@@ -17,36 +30,36 @@ public abstract class AbstractSingleTableDataSource<ValueType, PojoType> impleme
 
     @Override
     public Object insertAndReturnId(ValueType value) throws Exception {
-        return getMapper().insertAndReturnId(getPojo(value));
+        return mapper.insertAndReturnId(getPojo(value));
     }
 
     @Override
     public long insert(ValueType value) throws Exception {
-        return getMapper().insert(getPojo(value));
+        return mapper.insert(getPojo(value));
     }
 
     @Override
     public long insertBatch(List<ValueType> values) throws Exception {
-        return getMapper().insertBatch(values.parallelStream().map(this::getPojo).toList());
+        return mapper.insertBatch(values.parallelStream().map(this::getPojo).toList());
     }
 
     @Override
     public Object selectId(ValueType value) throws Exception {
-        return getMapper().selectId(getPojo(value));
+        return mapper.selectId(getPojo(value));
     }
 
     @Override
     public ValueType selectById(Object globalId) throws Exception {
-        return getValue(getMapper().selectById(globalId, getSelectContentFieldOnly()));
+        return getValue(mapper.selectById(globalId, getSelectContentFieldOnly()));
     }
 
     @Override
     public void updateById(ValueType value, Object globalId) throws Exception {
-        getMapper().updateById(getPojo(value), globalId);
+        mapper.updateById(getPojo(value), globalId);
     }
 
     @Override
     public void deleteById(Object globalId) throws Exception {
-        getMapper().deleteById(globalId);
+        mapper.deleteById(globalId);
     }
 }
