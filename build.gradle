@@ -51,7 +51,7 @@ java {
 }
 
 javadoc {
-    // System.setProperty("JAVA_TOOL_OPTIONS", "-Dfile.encoding=UTF-8")
+    // System.setProperty('JAVA_TOOL_OPTIONS', '-Dfile.encoding=UTF-8')
     options.encoding = 'UTF-8'
     // options.encoding = 'GBK'
     // options.charSet = 'UTF-8'
@@ -95,14 +95,14 @@ repositories {
 import java.nio.charset.StandardCharsets
 
 dependencies {
-    File localDevModeConfFile = new File("localDevMode");
+    File localDevModeConfFile = getProject().file('localDevMode');
     boolean isLocalDevMode = false;
     if (localDevModeConfFile.exists()) {
         FileReader fileReader = new FileReader(localDevModeConfFile, StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         try {
             String localDevMode = bufferedReader.readLine();
-            isLocalDevMode = "true".equals(localDevMode);
+            isLocalDevMode = 'true'.equals(localDevMode);
         } catch (Exception ignored) {
         } finally {
             bufferedReader.close();
@@ -114,12 +114,12 @@ dependencies {
         api platform(myDependencyParent)
         // providedRuntime platform(myDependencyParent)
         annotationProcessor platform(myDependencyParent)
-        runtimeOnly platform(myDependencyParent)
-        runtimeClasspath platform(myDependencyParent)
+        // runtimeOnly platform(myDependencyParent)
+        // runtimeClasspath platform(myDependencyParent)
         testAnnotationProcessor platform(myDependencyParent)
         testImplementation platform(myDependencyParent)
         testRuntimeOnly platform(myDependencyParent)
-        testRuntimeClasspath platform(myDependencyParent)
+        // testRuntimeClasspath platform(myDependencyParent)
     }
 
     String depsParentVersion = '0.0.3'
