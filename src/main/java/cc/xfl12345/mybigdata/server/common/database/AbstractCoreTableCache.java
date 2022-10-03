@@ -8,19 +8,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
 @Slf4j
-public abstract class AbstractCoreTableCache <IdType, ValueType> implements InitializingBean {
+public abstract class AbstractCoreTableCache <ID, Value> implements InitializingBean {
     @Getter
     @Setter
     protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
 
     @Getter
-    protected TwoWayMap<ValueType, IdType> tableNameCache;
+    protected TwoWayMap<Value, ID> tableNameCache;
 
     @Getter
-    protected IdType idOfTrue;
+    protected ID idOfTrue;
 
     @Getter
-    protected IdType idOfFalse;
+    protected ID idOfFalse;
 
     @Override
     public void afterPropertiesSet() throws Exception {

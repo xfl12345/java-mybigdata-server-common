@@ -7,10 +7,10 @@ import lombok.Setter;
 
 import java.util.List;
 
-public abstract class SingleTableDataHandler<ValueType> extends BaseDataHandler {
+public abstract class SingleTableDataHandler<Value> extends BaseDataHandler {
     @Getter
     @Setter
-    protected DataSource<ValueType> dataSource;
+    protected DataSource<Value> dataSource;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -22,13 +22,13 @@ public abstract class SingleTableDataHandler<ValueType> extends BaseDataHandler 
 
     @SuppressWarnings("unchecked")
     public SingleTableDataHandler() {
-        insertAndReturnId.setDefaultAction(valueType -> dataSource.insertAndReturnId((ValueType) valueType));
-        insert.setDefaultAction(valueType -> dataSource.insert((ValueType) valueType));
-        insertBatch.setDefaultAction(param -> dataSource.insertBatch((List<ValueType>) param));
-        selectId.setDefaultAction(valueType -> dataSource.selectId((ValueType) valueType));
-        selectById.setDefaultAction(idType -> dataSource.selectById(idType));
+        insertAndReturnId.setDefaultAction(value -> dataSource.insertAndReturnId((Value) value));
+        insert.setDefaultAction(value -> dataSource.insert((Value) value));
+        insertBatch.setDefaultAction(param -> dataSource.insertBatch((List<Value>) param));
+        selectId.setDefaultAction(value -> dataSource.selectId((Value) value));
+        selectById.setDefaultAction(id -> dataSource.selectById(id));
         updateById.setDefaultAction(param -> {
-            IdAndValue<ValueType> idAndValue = (IdAndValue<ValueType>) param;
+            IdAndValue<Value> idAndValue = (IdAndValue<Value>) param;
             dataSource.updateById(idAndValue.value, idAndValue.id);
             return null;
         });
@@ -38,19 +38,19 @@ public abstract class SingleTableDataHandler<ValueType> extends BaseDataHandler 
         });
     }
 
-    public Object insertAndReturnId(ValueType value) throws Exception {
+    public Object insertAndReturnId(Value value) throws Exception {
         return insertAndReturnId.execute(value);
     }
 
-    public Object insert(ValueType value) throws Exception {
+    public Object insert(Value value) throws Exception {
         return insert.execute(value);
     }
 
-    public Object insertBatch(List<ValueType> values) throws Exception {
+    public Object insertBatch(List<Value> values) throws Exception {
         return insertBatch.execute(values);
     }
 
-    public Object selectId(ValueType value) throws Exception {
+    public Object selectId(Value value) throws Exception {
         return selectId.execute(value);
     }
 
@@ -58,8 +58,8 @@ public abstract class SingleTableDataHandler<ValueType> extends BaseDataHandler 
         return selectById.execute(globalId);
     }
 
-    public void updateById(ValueType value, Object globalId) throws Exception {
-        IdAndValue<ValueType> idAndValue = new IdAndValue<>();
+    public void updateById(Value value, Object globalId) throws Exception {
+        IdAndValue<Value> idAndValue = new IdAndValue<>();
         idAndValue.id = globalId;
         idAndValue.value = value;
         updateById.execute(idAndValue);
