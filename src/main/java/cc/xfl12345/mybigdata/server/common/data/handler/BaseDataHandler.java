@@ -52,8 +52,7 @@ public class BaseDataHandler<Value> implements InitializingBean {
      * @param interceptorType 应用拦截器到哪个操作类型
      * @param interceptor 拦截器
      */
-    public void addInterceptor(int indexOfInterceptor, CURD interceptorType, DataHandlerInterceptor interceptor)
-        throws Exception {
+    public void addInterceptor(int indexOfInterceptor, CURD interceptorType, DataHandlerInterceptor interceptor) {
         getManagers(interceptorType).forEach(item -> item.add(indexOfInterceptor, interceptor));
     }
 
@@ -63,8 +62,7 @@ public class BaseDataHandler<Value> implements InitializingBean {
      * @param interceptorType 应用拦截器到哪个操作类型
      * @param interceptor 拦截器
      */
-    public void updateInterceptor(int indexOfInterceptor, CURD interceptorType, DataHandlerInterceptor interceptor)
-        throws Exception {
+    public void updateInterceptor(int indexOfInterceptor, CURD interceptorType, DataHandlerInterceptor interceptor) {
         getManagers(interceptorType).forEach(item -> item.set(indexOfInterceptor, interceptor));
     }
 
@@ -73,8 +71,7 @@ public class BaseDataHandler<Value> implements InitializingBean {
      * @param indexOfInterceptor 拦截器下标
      * @param interceptorType 应用拦截器到哪个操作类型
      */
-    public void removeInterceptor(int indexOfInterceptor, CURD interceptorType)
-        throws Exception {
+    public void removeInterceptor(int indexOfInterceptor, CURD interceptorType) {
         getManagers(interceptorType).forEach(item -> item.remove(indexOfInterceptor));
     }
 
@@ -107,34 +104,34 @@ public class BaseDataHandler<Value> implements InitializingBean {
 
 
 
-    public Object insertAndReturnId(Value value) throws Exception {
+    public Object insertAndReturnId(Value value) {
         return insertAndReturnId.execute(value);
     }
 
-    public Object insert(Value value) throws Exception {
+    public Object insert(Value value) {
         return insert.execute(value);
     }
 
-    public Object insertBatch(List<Value> values) throws Exception {
+    public Object insertBatch(List<Value> values) {
         return insertBatch.execute(values);
     }
 
-    public Object selectId(Value value) throws Exception {
+    public Object selectId(Value value) {
         return selectId.execute(value);
     }
 
-    public Object selectById(Object globalId) throws Exception {
+    public Object selectById(Object globalId) {
         return selectById.execute(globalId);
     }
 
-    public void updateById(Value value, Object globalId) throws Exception {
+    public void updateById(Value value, Object globalId) {
         IdAndValue<Value> idAndValue = new IdAndValue<>();
         idAndValue.id = globalId;
         idAndValue.value = value;
         updateById.execute(idAndValue);
     }
 
-    public void deleteById(Object globalId) throws Exception {
+    public void deleteById(Object globalId) {
         deleteById.execute(globalId);
     }
 }

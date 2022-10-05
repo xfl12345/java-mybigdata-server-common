@@ -11,14 +11,14 @@ public class DataHandlerInterceptor {
     /**
      * 在执行操作之前，先处理一些事情。如果返回 false。则不继续冒泡，并判断是否执行分支操作。
      */
-    public boolean beforeAction(Object param) throws Exception {
+    public boolean beforeAction(Object param) {
         return true;
     }
 
     /**
      * 分支操作。
      */
-    public Object branchAction(Object param) throws Exception {
+    public Object branchAction(Object param) {
         return null;
     }
 
@@ -28,6 +28,6 @@ public class DataHandlerInterceptor {
      * @param actionInputData  传入参数
      * @param actionOutputData 返回值
      */
-    public void afterAction(Object actionInputData, Object actionOutputData) throws Exception {
+    public void afterAction(Object actionInputData, Object actionOutputData) {
     }
 }

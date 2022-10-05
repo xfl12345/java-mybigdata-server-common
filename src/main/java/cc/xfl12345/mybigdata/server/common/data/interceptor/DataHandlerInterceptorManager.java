@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -26,9 +27,9 @@ public class DataHandlerInterceptorManager {
 
     @Getter
     @Setter
-    protected FunctionWithException<Object, Object> defaultAction = (value) -> null;
+    protected Function<Object, Object> defaultAction = (value) -> null;
 
-    public Object execute(Object param) throws Exception {
+    public Object execute(Object param) {
         boolean keepGoing = true;
         Object actionOutputData = null;
         int lastIndex = 0;

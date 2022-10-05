@@ -33,37 +33,37 @@ public abstract class AbstractSingleTableDataSource<Value, Pojo> implements Data
     protected abstract Pojo getPojo(Value value);
 
     @Override
-    public Object insertAndReturnId(Value value) throws Exception {
+    public Object insertAndReturnId(Value value) {
         return mapper.insertAndReturnId(getPojo(value));
     }
 
     @Override
-    public long insert(Value value) throws Exception {
+    public long insert(Value value) {
         return mapper.insert(getPojo(value));
     }
 
     @Override
-    public long insertBatch(List<Value> values) throws Exception {
+    public long insertBatch(List<Value> values) {
         return mapper.insertBatch(values.parallelStream().map(this::getPojo).toList());
     }
 
     @Override
-    public Object selectId(Value value) throws Exception {
+    public Object selectId(Value value) {
         return mapper.selectId(getPojo(value));
     }
 
     @Override
-    public Value selectById(Object globalId) throws Exception {
+    public Value selectById(Object globalId) {
         return getValue(mapper.selectById(globalId, getSelectContentFieldOnly()));
     }
 
     @Override
-    public void updateById(Value value, Object globalId) throws Exception {
+    public void updateById(Value value, Object globalId) {
         mapper.updateById(getPojo(value), globalId);
     }
 
     @Override
-    public void deleteById(Object globalId) throws Exception {
+    public void deleteById(Object globalId) {
         mapper.deleteById(globalId);
     }
 }

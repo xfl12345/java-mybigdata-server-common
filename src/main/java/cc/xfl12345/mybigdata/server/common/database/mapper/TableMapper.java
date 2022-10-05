@@ -6,17 +6,17 @@ public interface TableMapper<Value, Condition> extends TableNoConditionMapper<Va
     /**
      * 按 条件 查询数据。失败则抛出异常。
      */
-    List<Value> select(Condition condition) throws Exception;
+    List<Value> select(Condition condition);
 
     /**
      * 按 条件 更新数据。失败则抛出异常。
      * @return 影响行数
      */
-    long update(Value value, Condition condition) throws Exception;
+    long update(Value value, Condition condition);
 
     /**
      * 按 全局ID 删除数据。失败则抛出异常。
      * @return 影响行数
      */
-    long delete(Condition condition) throws Exception;
+    long delete(Condition condition);
 }

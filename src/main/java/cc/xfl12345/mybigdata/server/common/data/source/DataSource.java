@@ -8,39 +8,39 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
-    Object insertAndReturnId(Value value) throws Exception;
+    Object insertAndReturnId(Value value);
 
     /**
      * 插入数据。失败则抛出异常。
      *
      * @return 影响行数
      */
-    long insert(Value value) throws Exception;
+    long insert(Value value);
 
     /**
      * 插入数据。失败则抛出异常。
      *
      * @return 影响行数
      */
-    long insertBatch(List<Value> values) throws Exception;
+    long insertBatch(List<Value> values);
 
     /**
      * 给定数据，返回 全局数据记录表 的 ID
      *
      * @return 全局数据记录表 的 ID
      */
-    Object selectId(Value value) throws Exception;
+    Object selectId(Value value);
 
-    Value selectById(Object globalId) throws Exception;
+    Value selectById(Object globalId);
 
 
     /**
      * 按 全局ID 更新数据。失败则抛出异常。
      */
-    void updateById(Value value, Object globalId) throws Exception;
+    void updateById(Value value, Object globalId);
 
     /**
      * 按 全局ID 删除数据。失败则抛出异常。
      */
-    void deleteById(Object globalId) throws Exception;
+    void deleteById(Object globalId);
 }
