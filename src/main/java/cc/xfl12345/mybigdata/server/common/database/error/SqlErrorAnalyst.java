@@ -13,4 +13,6 @@ public interface SqlErrorAnalyst extends SqlErrorMapper {
     SimpleCoreTableCurdResult getSimpleCoreTableCurdResult(Connection connection, int vendorCode) throws SQLException;
 
     SimpleCoreTableCurdResult getSimpleCoreTableCurdResult(@NonNull Exception exception);
+
+    SimpleCoreTableCurdResult getSimpleCoreTableCurdResult(@NonNull SQLException exception);
 }
