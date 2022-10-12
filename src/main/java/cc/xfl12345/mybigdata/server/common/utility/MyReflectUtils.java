@@ -1,7 +1,6 @@
 package cc.xfl12345.mybigdata.server.common.utility;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +10,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -110,90 +110,69 @@ public class MyReflectUtils {
         return treeSet;
     }
 
-
-    /*
-     * 取得某一类所在包的所有类名 不含迭代
-     */
-    public static String[] getPackageAllClassName(String classLocation, String packageName) {
-        //将packageName分解
-        String[] packagePathSplit = packageName.split("[.]");
-        String realClassLocation = classLocation;
-        int packageLength = packagePathSplit.length;
-        for (int i = 0; i < packageLength; i++) {
-            realClassLocation = realClassLocation + File.separator + packagePathSplit[i];
-        }
-        File packeageDir = new File(realClassLocation);
-        if (packeageDir.isDirectory()) {
-            String[] allClassName = packeageDir.list();
-            return allClassName;
-        }
-        return null;
-    }
-
     /**
      * 从包package中获取所有的Class
-     * source code URL=https://blog.csdn.net/jdzms23/article/details/17550119
+     * =<a href="https://blog.csdn.net/jdzms23/article/details/17550119">source code URL</a>
      *
      * @param recursive 是否循环迭代
      */
-    public static List<Class<?>> getClasses(String packageName, boolean recursive) throws IOException, ClassNotFoundException {
-        //第一个class类的集合
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+    public static Collection<Class<?>> getClasses(
+        String packageName,
+        boolean recursive,
+        boolean includeNestedClass,
+        boolean needThrowException) throws IOException, ClassNotFoundException {
+
+        Collection<Class<?>> classes = new ConcurrentLinkedDeque<>();
         //获取包的名字 并进行替换
-        String packageDirName = packageName.replace('.', '/');
+        PackageNameCache packageNameCache = new PackageNameCache(packageName);
         //定义一个枚举的集合 并进行循环来处理这个目录下的things
         Enumeration<URL> dirs;
 
-        dirs = Thread.currentThread().getContextClassLoader().getResources(packageDirName);
-        //循环迭代下去
-        while (dirs.hasMoreElements()) {
-            //获取下一个元素
-            URL url = dirs.nextElement();
-            //得到协议的名称
-            String protocol = url.getProtocol();
-            //如果是以文件的形式保存在服务器上
-            if ("file".equals(protocol)) {
-                //获取包的物理路径
-                String filePath = URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8);
-                //以文件的方式扫描整个包下的文件 并添加到集合中
-                findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
-            } else if ("jar".equals(protocol)) {
-                //如果是jar包文件
-                //定义一个JarFile
-                JarFile jar;
-                //获取jar
-                jar = ((JarURLConnection) url.openConnection()).getJarFile();
-                //从此jar包 得到一个枚举类
-                Enumeration<JarEntry> entries = jar.entries();
-                //同样的进行循环迭代
-                while (entries.hasMoreElements()) {
-                    //获取jar里的一个实体 可以是目录 和一些jar包里的其他文件 如META-INF等文件
-                    JarEntry entry = entries.nextElement();
-                    String name = entry.getName();
-                    //如果是以/开头的
-                    if (name.charAt(0) == '/') {
-                        //获取后面的字符串
-                        name = name.substring(1);
+        dirs = Thread.currentThread().getContextClassLoader().getResources(packageNameCache.getPackagePath());
+
+        //遍历
+        try {
+            Collections.list(dirs).stream().parallel().forEach(url -> {
+                try {
+                    //得到协议的名称
+                    String protocol = url.getProtocol();
+                    //如果是以文件的形式保存在服务器上
+                    if ("file".equals(protocol)) {
+                        //获取包的物理路径
+                        String filePath = URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8);
+                        //以文件的方式扫描整个包下的文件 并添加到集合中
+                        classes.addAll(findClassesInPackageByFile(
+                            packageNameCache,
+                            new File(filePath),
+                            recursive,
+                            includeNestedClass,
+                            needThrowException
+                        ));
+                    } else if ("jar".equals(protocol)) {
+                        //如果是jar包文件
+                        JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
+                        //获取 JarFile
+                        JarFile jar = jarURLConnection.getJarFile();
+                        classes.addAll(findClassesInPackageByJar(
+                            packageNameCache,
+                            jar,
+                            recursive,
+                            includeNestedClass,
+                            needThrowException
+                        ));
                     }
-                    //如果前半部分和定义的包名相同
-                    if (name.startsWith(packageDirName)) {
-                        int idx = name.lastIndexOf('/');
-                        //如果以"/"结尾 是一个包
-                        if (idx != -1) {
-                            //获取包名 把"/"替换成"."
-                            packageName = name.substring(0, idx).replace('/', '.');
-                        }
-                        //如果可以迭代下去 并且是一个包
-                        if ((idx != -1) || recursive) {
-                            //如果是一个.class文件 而且不是目录
-                            if (name.endsWith(".class") && !entry.isDirectory()) {
-                                //去掉后面的".class" 获取真正的类名
-                                String className = name.substring(packageName.length() + 1, name.length() - 6);
-                                //添加到classes
-                                classes.add(Class.forName(packageName + '.' + className));
-                            }
-                        }
+                } catch (IOException | ClassNotFoundException e) {
+                    if (needThrowException) {
+                        throw new RuntimeException(e);
                     }
+                }
+            });
+        } catch (RuntimeException runtimeException) {
+            if (needThrowException) {
+                if (runtimeException.getCause() instanceof ClassNotFoundException e) {
+                    throw e;
+                } else {
+                    throw runtimeException;
                 }
             }
         }
@@ -203,87 +182,204 @@ public class MyReflectUtils {
 
     /**
      * 以文件的形式来获取包下的所有Class
-     * source code URL=https://blog.csdn.net/jdzms23/article/details/17550119
+     * <a href="https://www.w3cschool.cn/article/29226523.html">source code URL</a>
      */
-    public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive, List<Class<?>> classes) {
-        //获取此包的目录 建立一个File
-        File dir = new File(packagePath);
-        //如果不存在或者 也不是目录就直接返回
-        if (!dir.exists() || !dir.isDirectory()) {
-            return;
+    public static Collection<Class<?>> findClassesInPackageByFile(
+        final PackageNameCache packageNameCache,
+        final File sourceRoot,
+        final boolean recursive,
+        final boolean includeNestedClass,
+        final boolean needThrowException) throws ClassNotFoundException {
+        ConcurrentLinkedDeque<Class<?>> classes = new ConcurrentLinkedDeque<>();
+        // 如果不存在或者 也不是目录就直接返回
+        if (!sourceRoot.exists() || !sourceRoot.isDirectory()) {
+            return classes;
         }
-        //如果存在 就获取包下的所有文件 包括目录
-        File[] dirfiles = dir.listFiles(new FileFilter() {
-            //自定义过滤规则 如果可以循环(包含子目录) 或则是以.class结尾的文件(编译好的java类文件)
-            public boolean accept(File file) {
-                return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
-            }
-        });
-        if (dirfiles == null) {
-            return;
-        }
-        //循环所有文件
-        for (File file : dirfiles) {
-            //如果是目录 则继续扫描
-            if (file.isDirectory()) {
-                findAndAddClassesInPackageByFile(packageName + "." + file.getName(),
-                    file.getAbsolutePath(),
-                    recursive,
-                    classes);
-            } else {
-                //如果是java类文件 去掉后面的.class 只留下类名
-                String className = file.getName().substring(0, file.getName().length() - 6);
-                try {
-                    //添加到集合中去
-                    classes.add(Class.forName(packageName + '.' + className));
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+
+        String[] fileNames = sourceRoot.list();
+
+        if (fileNames != null) {
+            try {
+                // 遍历所有文件
+                Arrays.stream(fileNames).parallel().forEach(fileName -> {
+                    File file = new File(sourceRoot, fileName);
+                    String filePath = file.getPath();
+                    // 如果是个文件夹
+                    if (file.isDirectory()) {
+                        if (recursive) {
+                            try {
+                                classes.addAll(findClassesInPackageByFile(
+                                    new PackageNameCache(packageNameCache.getPackageName() + '.' + fileName),
+                                    file,
+                                    recursive,
+                                    includeNestedClass,
+                                    needThrowException
+                                ));
+                            } catch (ClassNotFoundException e) {
+                                if (needThrowException) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                    } else {
+                        if (fileName.endsWith(".class")) {
+                            String relativePath = filePath.substring(sourceRoot.getPath().length() + 1);
+                            boolean isOK = true;
+                            // 如果不允许递归，则检查是否存在子目录
+                            if (!recursive) {
+                                // 同一个文件，如果没有子目录路径，应当内容相等。
+                                // 为提升性能，没必要检查内容一致，只需比对长度。
+                                isOK = relativePath.length() == fileName.length();
+                            }
+
+                            // 检查是否满足内部类要求
+                            if (isOK && !includeNestedClass) {
+                                if (fileName.indexOf('$') >= 0) {
+                                    isOK = false;
+                                }
+                            }
+
+                            if (isOK) {
+                                // java class 文件去掉后面的.class 只留下类名
+                                String classSimpleName = fileName.substring(0, fileName.length() - 6);
+
+                                String classPackageName = file.getPath().substring(
+                                    sourceRoot.getPath().length() + 1
+                                );
+
+                                if (classPackageName.length() == file.getName().length()) {
+                                    classPackageName = packageNameCache.getPackageName();
+                                } else {
+                                    classPackageName = classPackageName
+                                        .substring(0, classPackageName.length() - fileName.length())
+                                        .replace('/', '.');
+                                }
+
+                                try {
+                                    // 添加到集合中去
+                                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(
+                                        classPackageName + '.' + classSimpleName
+                                    ));
+                                } catch (ClassNotFoundException e) {
+                                    if (needThrowException) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (RuntimeException runtimeException) {
+                if (needThrowException) {
+                    if (runtimeException.getCause() instanceof ClassNotFoundException e) {
+                        throw e;
+                    } else {
+                        throw runtimeException;
+                    }
                 }
             }
         }
+
+        return classes;
     }
 
-    private static int demoFetch(Class<?> cls, Object obj) {
-        //Field[] fields = cls.getFields(); // 获取所有公有的成员对象及函数
-        Field[] fields = cls.getDeclaredFields(); // 获取所有成员对象及函数
-        //  System.out.println(((Field)Arrays.stream(fields).toArray()[0]).getName());
+    /**
+     * 以jar的形式来获取包下的所有Class
+     */
+    public static Collection<Class<?>> findClassesInPackageByJar(
+        final PackageNameCache packageNameCache,
+        final JarFile sourceRoot,
+        final boolean recursive,
+        final boolean includeNestedClass,
+        final boolean needThrowException) throws ClassNotFoundException {
+        ConcurrentLinkedDeque<Class<?>> classes = new ConcurrentLinkedDeque<>();
 
-        int count = 0;
-        for (Field f : fields) {
-            if (!f.canAccess(obj))
-                f.setAccessible(true);// 暴力反射。 私有的也可以被访问。
-            // System.out.println(f);
-            try {
-                System.out.println("成员名称:" + f.getName() +
-                    " 成员修饰符: " + Modifier.toString(f.getModifiers()) +
-                    " 成员数据类型: " + f.getGenericType().getTypeName() +
-                    " 成员数据：" + f.get(obj));
-                count++;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+        String packageName = packageNameCache.getPackageName();
+        String packagePath = packageNameCache.getPackagePath();
+
+        try {
+            sourceRoot.stream().parallel().forEach(jarEntry -> {
+                String filePath = jarEntry.getName();
+                // 如果前半部分和定义的包名相同 而且 是一个 class 文件
+                if (filePath.startsWith(packagePath) && filePath.endsWith(".class")) {
+                    String classSimpleName = null;
+                    String classPackageName = null;
+
+                    // 后面的 +1 是为了去掉一定会有的 '/'
+                    String relativeFilePath = filePath.substring(packagePath.length() + 1);
+                    int lastIndexOfSplitChar = relativeFilePath.lastIndexOf('/');
+                    if (lastIndexOfSplitChar < 0) {
+                        // 去掉后面的".class" 获取真正的类名
+                        classSimpleName = relativeFilePath.substring(0, relativeFilePath.length() - 6);
+                        classPackageName = packageName;
+                    } else {
+                        if (recursive) {
+                            // 去掉后面的".class" 获取真正的类名
+                            classSimpleName = relativeFilePath.substring(
+                                lastIndexOfSplitChar + 1,
+                                relativeFilePath.length() - 6
+                            );
+                            classPackageName = filePath.substring(0, packagePath.length() + 1);
+                        }
+                    }
+
+                    if (classSimpleName != null && !"".equals(classSimpleName)) {
+                        try {
+                            if (classSimpleName.indexOf('$') < 0) {
+                                // 添加到classes
+                                classes.add(Thread.currentThread().getContextClassLoader().loadClass(
+                                    classPackageName + '.' + classSimpleName
+                                ));
+                            } else {
+                                if (includeNestedClass) {
+                                    // 添加到classes
+                                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(
+                                        classPackageName + '.' + classSimpleName
+                                    ));
+                                }
+                            }
+                        } catch (ClassNotFoundException e) {
+                            if (needThrowException) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (RuntimeException runtimeException) {
+            if (needThrowException) {
+                if (runtimeException.getCause() instanceof ClassNotFoundException e) {
+                    throw e;
+                } else {
+                    throw runtimeException;
+                }
             }
         }
-        return count;
+
+        return classes;
     }
 
-    public static void demo(Class<?> cls) {
-        Object obj;
-        try {
-            obj = cls.getDeclaredConstructor().newInstance();
-            int count = demoFetch(cls, obj);
-            System.out.println("共计 " + count + " 个成员");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static class PackageNameCache {
+        private final String packageName;
+
+        private final String packagePath;
+
+        public PackageNameCache(String packageName) {
+            this.packageName = packageName;
+            this.packagePath = packageName.replace('.', '/');
         }
-    }
 
-    public static void demo(Object obj) {
-        try {
-            Class<?> cls = obj.getClass();
-            int count = demoFetch(cls, obj);
-            System.out.println("共计 " + count + " 个成员");
-        } catch (Exception e) {
-            e.printStackTrace();
+        public PackageNameCache(JarEntry jarEntry) {
+            this.packagePath = jarEntry.getName();
+            this.packageName = packagePath.replace('/', '.');
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public String getPackagePath() {
+            return packagePath;
         }
     }
 }
