@@ -2,7 +2,7 @@ package cc.xfl12345.mybigdata.server.common.database.mapper;
 
 import java.util.List;
 
-public interface TableNoConditionMapper<Value> {
+public interface TableNoConditionMapper<Value> extends SingleGenericTypeGetter<Value> {
     /**
      * 插入数据。失败则抛出异常。
      * @return 影响行数
