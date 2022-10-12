@@ -3,7 +3,7 @@ package cc.xfl12345.mybigdata.server.common.data.source.impl;
 
 import cc.xfl12345.mybigdata.server.common.appconst.AppConst;
 import cc.xfl12345.mybigdata.server.common.data.source.DataSource;
-import cc.xfl12345.mybigdata.server.common.database.mapper.TableNoConditionMapper;
+import cc.xfl12345.mybigdata.server.common.database.mapper.TableBasicMapper;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,7 +17,7 @@ public abstract class AbstractSingleTableDataSource<Value, Pojo> implements Data
 
     @Getter
     @Setter
-    protected TableNoConditionMapper<Pojo> mapper;
+    protected TableBasicMapper<Pojo> mapper;
 
     @Override
     public void afterPropertiesSet() throws Exception {
