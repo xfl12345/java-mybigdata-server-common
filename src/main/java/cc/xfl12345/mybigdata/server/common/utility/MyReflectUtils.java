@@ -132,7 +132,7 @@ public class MyReflectUtils {
 
         //遍历
         try {
-            Collections.list(dirs).stream().parallel().forEach(url -> {
+            Collections.list(dirs).parallelStream().forEach(url -> {
                 try {
                     //得到协议的名称
                     String protocol = url.getProtocol();
@@ -201,7 +201,7 @@ public class MyReflectUtils {
         if (fileNames != null) {
             try {
                 // 遍历所有文件
-                Arrays.stream(fileNames).parallel().forEach(fileName -> {
+                Arrays.asList(fileNames).parallelStream().forEach(fileName -> {
                     File file = new File(sourceRoot, fileName);
                     String filePath = file.getPath();
                     // 如果是个文件夹
