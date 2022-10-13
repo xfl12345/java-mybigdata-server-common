@@ -3,7 +3,7 @@ package cc.xfl12345.mybigdata.server.common.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-public class DbDataSourceInfo {
+public class DatabaseDataSourceInfo {
     @Getter
     @Setter
     private String name;
