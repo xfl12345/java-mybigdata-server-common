@@ -1,4 +1,4 @@
-package cc.xfl12345.mybigdata.server.common.pojo;
+package cc.xfl12345.mybigdata.server.common.database.pojo;
 
 
 import java.io.Serial;
