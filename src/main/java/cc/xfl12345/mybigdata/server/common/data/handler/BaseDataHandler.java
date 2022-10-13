@@ -1,20 +1,19 @@
 package cc.xfl12345.mybigdata.server.common.data.handler;
 
-
 import cc.xfl12345.mybigdata.server.common.appconst.AppConst;
 import cc.xfl12345.mybigdata.server.common.appconst.CURD;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataHandlerInterceptor;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataHandlerInterceptorManager;
 import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;
-import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class BaseDataHandler<Value> implements InitializingBean {
+public class BaseDataHandler<Value> {
     protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
 
-    @Override
+    @PostConstruct
     public void afterPropertiesSet() throws Exception {
     }
 

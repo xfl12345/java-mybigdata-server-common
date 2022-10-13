@@ -6,11 +6,11 @@ import cc.xfl12345.mybigdata.server.common.data.source.DataSource;
 import cc.xfl12345.mybigdata.server.common.database.mapper.TableBasicMapper;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
-public abstract class AbstractSingleTableDataSource<Value, Pojo> implements DataSource<Value>, InitializingBean {
+public abstract class AbstractSingleTableDataSource<Value, Pojo> implements DataSource<Value> {
     @Getter
     @Setter
     protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
@@ -19,7 +19,7 @@ public abstract class AbstractSingleTableDataSource<Value, Pojo> implements Data
     @Setter
     protected TableBasicMapper<Pojo> mapper;
 
-    @Override
+    @PostConstruct
     public void afterPropertiesSet() throws Exception {
         if (mapper == null) {
             throw new IllegalArgumentException(fieldCanNotBeNullMessageTemplate.formatted("mapper"));

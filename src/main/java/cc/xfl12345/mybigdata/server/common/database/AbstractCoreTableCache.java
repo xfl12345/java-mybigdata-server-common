@@ -5,10 +5,11 @@ import cc.xfl12345.mybigdata.server.common.pojo.TwoWayMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
+
+import javax.annotation.PostConstruct;
 
 @Slf4j
-public abstract class AbstractCoreTableCache <ID, Value> implements InitializingBean {
+public abstract class AbstractCoreTableCache <ID, Value> {
     @Getter
     @Setter
     protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
@@ -22,7 +23,7 @@ public abstract class AbstractCoreTableCache <ID, Value> implements Initializing
     @Getter
     protected ID idOfFalse;
 
-    @Override
+    @PostConstruct
     public void afterPropertiesSet() throws Exception {
         refreshBooleanCache();
         refreshCoreTableNameCache();
