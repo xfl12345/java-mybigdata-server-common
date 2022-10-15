@@ -110,6 +110,21 @@ public class MyReflectUtils {
         return treeSet;
     }
 
+    public static Class<?> getClassByName(String className) throws ClassNotFoundException {
+        Class<?> clazz = null;
+        try {
+            clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+        } catch (Exception | Error e) {
+            //ignore
+        }
+
+        if (clazz == null) {
+            clazz = Class.forName(className);
+        }
+
+        return clazz;
+    }
+
     /**
      * 从包package中获取所有的Class
      * =<a href="https://blog.csdn.net/jdzms23/article/details/17550119">source code URL</a>
@@ -257,7 +272,7 @@ public class MyReflectUtils {
 
                                 try {
                                     // 添加到集合中去
-                                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(
+                                    classes.add(getClassByName(
                                         classPackageName + '.' + classSimpleName
                                     ));
                                 } catch (ClassNotFoundException e) {
@@ -327,13 +342,11 @@ public class MyReflectUtils {
                         try {
                             if (classSimpleName.indexOf('$') < 0) {
                                 // 添加到classes
-                                classes.add(Thread.currentThread().getContextClassLoader().loadClass(
-                                    classPackageName + '.' + classSimpleName
-                                ));
+                                classes.add(getClassByName(classPackageName + '.' + classSimpleName));
                             } else {
                                 if (includeNestedClass) {
                                     // 添加到classes
-                                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(
+                                    classes.add(getClassByName(
                                         classPackageName + '.' + classSimpleName
                                     ));
                                 }
