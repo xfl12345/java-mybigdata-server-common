@@ -1,5 +1,7 @@
 package cc.xfl12345.mybigdata.server.common.database.mapper;
 
+import cc.xfl12345.mybigdata.server.common.database.error.TableOperationException;
+
 import java.util.List;
 
 public interface TableBasicMapper<Pojo> {
@@ -21,8 +23,23 @@ public interface TableBasicMapper<Pojo> {
      */
     Object insertAndReturnId(Pojo pojo);
 
+    /**
+     * 唯一检索，定值查询。给定 POJO ，使用 POJO 内部的值作为筛选条件， 使用 fields 作为获取内容的约束范围。
+     * 假定有 POJO 结构 {a: int, b: int, c: int, d: int}
+     * 在数据库中有唯一行 {a: 1, b: 2, c: 3, d: 4} 且满足 a = 1 条件的只有该行，
+     * 传入 POJO {a: 1} ， fields ["d"] ，
+     * 则该函数应该返回 POJO {d: 4} 。
+     * 如果不满足唯一匹配（数据库返回多条匹配结果），则应当抛出运行时异常 {@link TableOperationException}
+     */
     Pojo selectOne(Pojo pojo, String[] fields);
 
+    /**
+     * 唯一检索，定值查询。给定 ID ，使用 ID 的值作为筛选条件， 使用 fields 作为获取内容的约束范围。
+     * fields 的约定同 {@link TableBasicMapper#selectOne(Object, String[])}
+     * @param globalId 全局数据记录表 的 ID
+     * @param fields 指定返回的 POJO 哪些字段该有内容
+     * @return POJO
+     */
     Pojo selectById(Object globalId, String[] fields);
 
     /**
@@ -41,5 +58,9 @@ public interface TableBasicMapper<Pojo> {
      */
     void deleteById(Object globalId);
 
+    /**
+     * 受限于 Java 的半伪泛型，为了编程快乐，特别强制实现获取 泛型类型 的接口。
+     * @return 实现该接口时使用的泛型类型
+     */
     Class<Pojo> getPojoType();
 }
