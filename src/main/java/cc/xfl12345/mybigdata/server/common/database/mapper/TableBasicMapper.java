@@ -27,7 +27,7 @@ public interface TableBasicMapper<Pojo> {
      * 唯一检索，定值查询。给定 POJO ，使用 POJO 内部的值作为筛选条件， 使用 fields 作为获取内容的约束范围。
      * 假定有 POJO 结构 {a: int, b: int, c: int, d: int}
      * 在数据库中有唯一行 {a: 1, b: 2, c: 3, d: 4} 且满足 a = 1 条件的只有该行，
-     * 传入 POJO {a: 1} ， fields ["d"] ，
+     * 传入 POJO={a: 1} ， fields=["d"] ，
      * 则该函数应该返回 POJO {d: 4} 。
      * 如果不满足唯一匹配（数据库返回多条匹配结果），则应当抛出运行时异常 {@link TableOperationException}
      */
@@ -41,6 +41,16 @@ public interface TableBasicMapper<Pojo> {
      * @return POJO
      */
     Pojo selectById(Object globalId, String[] fields);
+
+    /**
+     * 只获取目标字段的内容，其余约定同 {@link TableBasicMapper#selectOne(Object, String[])}
+     */
+    Pojo selectOne(Pojo pojo, String field);
+
+    /**
+     * 只获取目标字段的内容，其余约定同 {@link TableBasicMapper#selectById(Object, String[])}
+     */
+    Pojo selectById(Object globalId, String field);
 
     /**
      * 给定数据，返回 全局数据记录表 的 ID
