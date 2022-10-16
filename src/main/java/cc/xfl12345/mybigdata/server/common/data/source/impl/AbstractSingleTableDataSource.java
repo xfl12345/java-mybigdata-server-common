@@ -20,7 +20,7 @@ public abstract class AbstractSingleTableDataSource<Value, Pojo> implements Data
     protected TableBasicMapper<Pojo> mapper;
 
     @PostConstruct
-    public void afterPropertiesSet() throws Exception {
+    public void init() throws Exception {
         if (mapper == null) {
             throw new IllegalArgumentException(fieldCanNotBeNullMessageTemplate.formatted("mapper"));
         }

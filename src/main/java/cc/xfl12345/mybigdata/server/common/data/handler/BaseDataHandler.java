@@ -14,7 +14,7 @@ public class BaseDataHandler<Value> {
     protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
 
     @PostConstruct
-    public void afterPropertiesSet() throws Exception {
+    public void init() throws Exception {
     }
 
 

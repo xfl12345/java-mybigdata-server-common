@@ -144,9 +144,6 @@ dependencies {
     api group: 'javax.annotation', name: 'javax.annotation-api'
 
     // Spring
-    // https://mvnrepository.com/artifact/org.springframework/spring-beans
-    api group: 'org.springframework', name: 'spring-beans'
-
     // https://mvnrepository.com/artifact/org.springframework/spring-web
     api group: 'org.springframework', name: 'spring-web'
 

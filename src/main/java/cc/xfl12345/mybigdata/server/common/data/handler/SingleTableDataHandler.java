@@ -14,8 +14,8 @@ public abstract class SingleTableDataHandler<Value> extends BaseDataHandler<Valu
 
     @SuppressWarnings("unchecked")
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+    public void init() throws Exception {
+        super.init();
         if (dataSource == null) {
             throw new IllegalArgumentException(fieldCanNotBeNullMessageTemplate.formatted("dataSource"));
         }

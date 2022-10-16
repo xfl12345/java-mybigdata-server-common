@@ -24,7 +24,7 @@ public abstract class AbstractCoreTableCache <ID, Value> {
     protected ID idOfFalse;
 
     @PostConstruct
-    public void afterPropertiesSet() throws Exception {
+    public void init() throws Exception {
         refreshBooleanCache();
         refreshCoreTableNameCache();
     }
