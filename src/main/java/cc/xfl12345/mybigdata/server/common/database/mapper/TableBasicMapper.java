@@ -31,26 +31,16 @@ public interface TableBasicMapper<Pojo> {
      * 则该函数应该返回 POJO {d: 4} 。
      * 如果不满足唯一匹配（数据库返回多条匹配结果），则应当抛出运行时异常 {@link TableOperationException}
      */
-    Pojo selectOne(Pojo pojo, String[] fields);
+    Pojo selectOne(Pojo pojo, String... fields);
 
     /**
      * 唯一检索，定值查询。给定 ID ，使用 ID 的值作为筛选条件， 使用 fields 作为获取内容的约束范围。
-     * fields 的约定同 {@link TableBasicMapper#selectOne(Object, String[])}
+     * fields 的约定同 {@link TableBasicMapper#selectOne(Object, String...)}
      * @param globalId 全局数据记录表 的 ID
      * @param fields 指定返回的 POJO 哪些字段该有内容
      * @return POJO
      */
-    Pojo selectById(Object globalId, String[] fields);
-
-    /**
-     * 只获取目标字段的内容，其余约定同 {@link TableBasicMapper#selectOne(Object, String[])}
-     */
-    Pojo selectOne(Pojo pojo, String field);
-
-    /**
-     * 只获取目标字段的内容，其余约定同 {@link TableBasicMapper#selectById(Object, String[])}
-     */
-    Pojo selectById(Object globalId, String field);
+    Pojo selectById(Object globalId, String... fields);
 
     /**
      * 给定数据，返回 全局数据记录表 的 ID
