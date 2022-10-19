@@ -64,33 +64,8 @@ public class ConsoleCharsetUtils {
     }
 
     protected int getWindowsShellCodePageNumber() {
-        // String codePageNumber = null;
-        // String content = null;
-        // try {
-        //     Process process = Runtime.getRuntime().exec("cmd /c chcp");
-        //     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        //     content = bufferedReader.readLine();
-        //     bufferedReader.close();
-        // } catch (IOException e) {
-        //     log.warn(e.getMessage(), e);
-        // }
-        //
-        // if (content != null) {
-        //     // 10 个 零
-        //     StringBuilder codePageNumberBuilder = new StringBuilder("0000000000");
-        //     // 获取最后面的那段数字
-        //     for (int i = 0; i < content.length() && i < codePageNumberBuilder.length(); i++) {
-        //         char currentChar = content.charAt(content.length() - 1 - i);
-        //         if (!Character.isDigit(currentChar)) {
-        //             break;
-        //         }
-        //         codePageNumberBuilder.setCharAt(codePageNumberBuilder.length() - 1 - i, currentChar);
-        //     }
-        //     codePageNumber = codePageNumberBuilder.toString();
-        // }
         return Kernel32.INSTANCE.GetConsoleCP();
     }
-
 
     protected Charset getCharsetForName(String charsetName) {
         Charset charset = null;
