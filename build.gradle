@@ -130,10 +130,11 @@ dependencies {
     }
 
     // JAVA JNA
+    String javaJnaVersion = '5.12.1'
     // https://mvnrepository.com/artifact/net.java.dev.jna/jna
-    api group: 'net.java.dev.jna', name: 'jna', version: '5.12.1'
+    api group: 'net.java.dev.jna', name: 'jna', version: javaJnaVersion
     // https://mvnrepository.com/artifact/net.java.dev.jna/jna
-    api group: 'net.java.dev.jna', name: 'jna-platform', version: '5.12.1'
+    api group: 'net.java.dev.jna', name: 'jna-platform', version: javaJnaVersion
 
     // 注解神器 getter setter toString builder
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
