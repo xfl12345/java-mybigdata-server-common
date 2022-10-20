@@ -1,8 +1,5 @@
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONWriter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonWriter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +9,6 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class StudyDownloadMicrosoftCodePage {
     public static void main(String[] args) throws IOException {
@@ -73,7 +69,7 @@ public class StudyDownloadMicrosoftCodePage {
         // String kvTemplate = "%s%s: \"%s\"";
 
 
-        File localMapFile = new File(System.getProperty("user.dir"), "src/main/resources/" + "json/microsoft_windows_code_page.json");
+        File localMapFile = new File(System.getProperty("user.dir"), "src/main/resources/" + "cc/xfl12345/mybigdata/server/common/json/microsoft_windows_code_page.json");
         if (localMapFile.exists() && localMapFile.canWrite()) {
             System.out.println("Updating file=" + localMapFile.getPath());
             FileOutputStream fileOutputStream = new FileOutputStream(localMapFile);

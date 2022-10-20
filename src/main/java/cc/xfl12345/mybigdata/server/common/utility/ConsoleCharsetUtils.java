@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 
 @Slf4j
 public class ConsoleCharsetUtils {
-    protected String microsoftWindowsCodePageJsonResourcePath = "json/microsoft_windows_code_page.json";
+    protected String microsoftWindowsCodePageJsonResourcePath = "cc/xfl12345/mybigdata/server/common/json/microsoft_windows_code_page.json";
 
     protected LinkedHashMap<String, String> microsoftWindowsCodePageMap = new LinkedHashMap<>();
 

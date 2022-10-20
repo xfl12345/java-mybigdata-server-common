@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TestJavaCharsetSupport {
     public static void main(String[] args) throws IOException {
-        URL localMapFileURL = Thread.currentThread().getContextClassLoader().getResource("json/microsoft_windows_code_page.json");
+        URL localMapFileURL = Thread.currentThread().getContextClassLoader().getResource("cc/xfl12345/mybigdata/server/common/json/microsoft_windows_code_page.json");
         if (localMapFileURL != null) {
             InputStream inputStream = localMapFileURL.openConnection().getInputStream();
             String codePageMapInJson = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
