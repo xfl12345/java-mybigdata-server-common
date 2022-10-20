@@ -45,10 +45,12 @@ public class ConsoleCharsetUtils {
         Charset charset = null;
         switch (Platform.getOSType()) {
             case Platform.WINDOWS -> {
-                String charsetName = microsoftWindowsCodePageMap.get(
-                    "" + getWindowsShellCodePageNumber()
-                );
-                charset = getCharsetForName(charsetName);
+                if (Kernel32.INSTANCE.GetConsoleWindow() != null) {
+                    String charsetName = microsoftWindowsCodePageMap.get(
+                        "" + getWindowsShellCodePageNumber()
+                    );
+                    charset = getCharsetForName(charsetName);
+                }
             }
             case Platform.LINUX -> {
                 String currentLang = System.getenv("LANG");
