@@ -1,9 +1,9 @@
 package cc.xfl12345.mybigdata.server.common.data.condition;
 
-import com.alibaba.fastjson2.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public interface ValueCondition {
     public ValueCondition op(String field, Op op, Object value);
 
-    public JSONArray getJson();
+    public JsonNode getJson();
 }
