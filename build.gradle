@@ -122,7 +122,7 @@ dependencies {
         // testRuntimeClasspath platform(myDependencyParent)
     }
 
-    String depsParentVersion = '0.0.3'
+    String depsParentVersion = '0.0.4'
     if (isLocalDevMode) {
         applyPlatform2All(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
@@ -159,8 +159,8 @@ dependencies {
     api group: 'commons-codec', name: 'commons-codec'
 
     // JSON support
-    // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    api group: 'com.alibaba.fastjson2', name: 'fastjson2', version: '2.0.13'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4.2'
 
     // Slf4j API
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
