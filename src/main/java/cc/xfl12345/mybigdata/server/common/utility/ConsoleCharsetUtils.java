@@ -3,7 +3,6 @@ package cc.xfl12345.mybigdata.server.common.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
@@ -16,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.LinkedHashMap;
 
-@Slf4j
 public class ConsoleCharsetUtils {
     protected String microsoftWindowsCodePageJsonResourcePath = "cc/xfl12345/mybigdata/server/common/json/microsoft_windows_code_page.json";
 
@@ -74,9 +72,9 @@ public class ConsoleCharsetUtils {
         try {
             charset = Charset.forName(charsetName);
         } catch (UnsupportedCharsetException e) {
-            log.warn("Unsupported charset: " + e.getCharsetName());
+            System.err.println(ConsoleCharsetUtils.class.getCanonicalName() + ": Unsupported charset: " + e.getCharsetName());
         } catch (IllegalCharsetNameException e) {
-            log.warn("Illegal charset name: " + e.getCharsetName());
+            System.err.println(ConsoleCharsetUtils.class.getCanonicalName() + ": Illegal charset name: " + e.getCharsetName());
         } catch (Exception e) {
             // ignore
         }
