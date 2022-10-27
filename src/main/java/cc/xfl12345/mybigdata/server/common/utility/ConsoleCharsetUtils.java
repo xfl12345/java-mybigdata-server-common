@@ -1,5 +1,6 @@
 package cc.xfl12345.mybigdata.server.common.utility;
 
+import cc.xfl12345.mybigdata.server.common.json.PackageLandmark;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
@@ -16,21 +17,21 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.LinkedHashMap;
 
 public class ConsoleCharsetUtils {
-    protected String microsoftWindowsCodePageJsonResourcePath = "cc/xfl12345/mybigdata/server/common/json/microsoft_windows_code_page.json";
+    protected String microsoftWindowsCodePageJsonFileName = "microsoft_windows_code_page.json";
 
     protected LinkedHashMap<String, String> microsoftWindowsCodePageMap = new LinkedHashMap<>();
 
     @SuppressWarnings("unchecked")
     @PostConstruct
     public void init() throws Exception {
-        URL localMapFileURL = Thread.currentThread().getContextClassLoader().getResource(microsoftWindowsCodePageJsonResourcePath);
+        URL localMapFileURL = PackageLandmark.class.getResource(microsoftWindowsCodePageJsonFileName);
         if (localMapFileURL != null) {
             Reader reader = new InputStreamReader(localMapFileURL.openStream(), StandardCharsets.UTF_8);
             ObjectMapper mapper = new ObjectMapper();
             microsoftWindowsCodePageMap = (LinkedHashMap<String, String>) mapper.readValue(reader, LinkedHashMap.class);
             reader.close();
         } else {
-            throw new FileNotFoundException(microsoftWindowsCodePageJsonResourcePath);
+            throw new FileNotFoundException(microsoftWindowsCodePageJsonFileName);
         }
     }
 
