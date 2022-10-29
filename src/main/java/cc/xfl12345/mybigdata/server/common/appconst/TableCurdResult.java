@@ -1,6 +1,6 @@
 package cc.xfl12345.mybigdata.server.common.appconst;
 
-public enum SimpleCoreTableCurdResult {
+public enum TableCurdResult {
     SUCCEED,
     DUPLICATE,
     UNKNOWN_FAILED,
