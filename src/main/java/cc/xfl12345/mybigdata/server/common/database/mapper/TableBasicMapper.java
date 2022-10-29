@@ -25,10 +25,15 @@ public interface TableBasicMapper<Pojo> {
 
     /**
      * 唯一检索，定值查询。给定 POJO ，使用 POJO 内部的值作为筛选条件， 使用 fields 作为获取内容的约束范围。
+     * 如果 fields 的值是 null 或者是一个 空数组，则将查询该 POJO 所有字段的值。
      * 假定有 POJO 结构 {a: int, b: int, c: int, d: int}
      * 在数据库中有唯一行 {a: 1, b: 2, c: 3, d: 4} 且满足 a = 1 条件的只有该行，
      * 传入 POJO={a: 1} ， fields=["d"] ，
      * 则该函数应该返回 POJO {d: 4} 。
+     * 假定有 POJO 结构 {a: int, b: int, c: int, d: int, e: string}
+     * 在数据库中有唯一行 {a: 1, b: 2, c: 3, d: 4, e: "Hello,world!"} 且满足 a = 1 条件的只有该行，
+     * 传入 POJO={a: 1} ， fields=[] （或者传入 POJO={a: 1} , fields=null），
+     * 则该函数应该返回 POJO {a: 1, b: 2, c: 3, d: 4, e: "Hello,world!"} 。
      * 如果不满足唯一匹配（数据库返回多条匹配结果），则应当抛出运行时异常 {@link TableOperationException}
      */
     Pojo selectOne(Pojo pojo, String... fields);
