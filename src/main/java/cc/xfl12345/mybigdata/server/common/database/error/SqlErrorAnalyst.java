@@ -8,11 +8,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface SqlErrorAnalyst extends SqlErrorMapper {
-    TableCurdResult getSimpleCoreTableCurdResult(DataSource dataSource, int vendorCode) throws SQLException;
+    TableCurdResult getTableCurdResult(DataSource dataSource, int vendorCode) throws SQLException;
 
-    TableCurdResult getSimpleCoreTableCurdResult(Connection connection, int vendorCode) throws SQLException;
+    TableCurdResult getTableCurdResult(Connection connection, int vendorCode) throws SQLException;
 
-    TableCurdResult getSimpleCoreTableCurdResult(@NonNull Exception exception);
+    TableCurdResult getTableCurdResult(@NonNull Exception exception);
 
-    TableCurdResult getSimpleCoreTableCurdResult(@NonNull SQLException exception);
+    TableCurdResult getTableCurdResult(@NonNull SQLException exception);
 }
