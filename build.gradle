@@ -66,7 +66,7 @@ publishing {
 }
 
 group = 'cc.xfl12345.mybigdata'
-version = '0.5.0'
+version = '0.5.1'
 sourceCompatibility = JavaVersion.VERSION_17
 
 
