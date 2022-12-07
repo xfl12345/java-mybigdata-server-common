@@ -122,7 +122,7 @@ dependencies {
         // testRuntimeClasspath platform(myDependencyParent)
     }
 
-    String depsParentVersion = '0.0.5'
+    String depsParentVersion = '0.0.8'
     if (isLocalDevMode) {
         applyPlatform2All(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
@@ -150,6 +150,9 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
     api group: 'javax.annotation', name: 'javax.annotation-api'
 
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    api group: 'javax.servlet', name: 'javax.servlet-api'
+
     // Spring
     // https://mvnrepository.com/artifact/org.springframework/spring-web
     api group: 'org.springframework', name: 'spring-web'
@@ -160,7 +163,11 @@ dependencies {
 
     // JSON support
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4.2'
+    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+
+    // JSON Schema support
+    // https://mvnrepository.com/artifact/com.networknt/json-schema-validator
+    api group: 'com.networknt', name: 'json-schema-validator', version: '1.0.73'
 
     // Slf4j API
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
@@ -185,7 +192,7 @@ dependencies {
     testImplementation group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
+    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging'

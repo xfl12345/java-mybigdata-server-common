@@ -1,7 +1,8 @@
 package cc.xfl12345.mybigdata.server.common.database;
 
-import cc.xfl12345.mybigdata.server.common.appconst.AppConst;
+import cc.xfl12345.mybigdata.server.common.appconst.DefaultSingleton;
 import cc.xfl12345.mybigdata.server.common.database.error.TableDataException;
+import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import cc.xfl12345.mybigdata.server.common.pojo.TwoWayMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import javax.annotation.PostConstruct;
 public abstract class AbstractCoreTableCache <ID, Value> {
     @Getter
     @Setter
-    protected String fieldCanNotBeNullMessageTemplate = AppConst.FIELD_CAN_NOT_BE_NULL_MESSAGE_TEMPLATE;
+    protected FieldNotNullChecker fieldNotNullChecker = DefaultSingleton.FIELD_NOT_NULL_CHECKER;
 
     @Getter
     protected TwoWayMap<Value, ID> tableNameCache;
@@ -49,4 +50,10 @@ public abstract class AbstractCoreTableCache <ID, Value> {
             tableNameOfBoolean()
         );
     }
+
+    public abstract Object getTableNameId(Class<?> pojoClass);
+
+    public abstract Class<?> getPojoClass(Object id);
+
+    public abstract Object getEmptyPoEntity(Class<?> pojoClass);
 }

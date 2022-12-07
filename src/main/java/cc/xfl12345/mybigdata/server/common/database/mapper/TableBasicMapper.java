@@ -1,7 +1,5 @@
 package cc.xfl12345.mybigdata.server.common.database.mapper;
 
-import cc.xfl12345.mybigdata.server.common.database.error.TableOperationException;
-
 import java.util.List;
 
 public interface TableBasicMapper<Pojo> {
@@ -12,7 +10,7 @@ public interface TableBasicMapper<Pojo> {
     long insert(Pojo pojo);
 
     /**
-     * 插入数据。失败则抛出异常。
+     * 插入数据。失败则抛出异常。如果影响行数与插入数组长度不一致，也应该抛出异常。
      * @return 影响行数
      */
     long insertBatch(List<Pojo> pojos);
@@ -34,7 +32,7 @@ public interface TableBasicMapper<Pojo> {
      * 在数据库中有唯一行 {a: 1, b: 2, c: 3, d: 4, e: "Hello,world!"} 且满足 a = 1 条件的只有该行，
      * 传入 POJO={a: 1} ， fields=[] （或者传入 POJO={a: 1} , fields=null），
      * 则该函数应该返回 POJO {a: 1, b: 2, c: 3, d: 4, e: "Hello,world!"} 。
-     * 如果不满足唯一匹配（数据库返回多条匹配结果），则应当抛出运行时异常 {@link TableOperationException}
+     * 如果不满足唯一匹配（数据库返回多条匹配结果），则应当抛出运行时异常 {@link cc.xfl12345.mybigdata.server.common.database.error.TableOperationException}
      */
     Pojo selectOne(Pojo pojo, String... fields);
 
@@ -46,6 +44,14 @@ public interface TableBasicMapper<Pojo> {
      * @return POJO
      */
     Pojo selectById(Object globalId, String... fields);
+
+    /**
+     * {@link TableBasicMapper#selectById(Object, String...)} 的 批量版
+     * @param globalIdList 一些 全局数据记录表 的 ID
+     * @param fields 指定返回的 POJO 哪些字段该有内容
+     * @return POJO
+     */
+    List<Pojo> selectBatchById(List<Object> globalIdList, String... fields);
 
     /**
      * 给定数据，返回 全局数据记录表 的 ID
@@ -62,6 +68,18 @@ public interface TableBasicMapper<Pojo> {
      * 按 全局ID 删除数据。失败则抛出异常。
      */
     void deleteById(Object globalId);
+
+    /**
+     * {@link TableBasicMapper#deleteById(Object)} 的 批量版
+     * @param globalIdList 一些 全局数据记录表 的 ID
+     */
+    void deleteBatchById(List<Object> globalIdList);
+
+    boolean isForUpdate();
+
+    void setForUpdate(boolean forUpdate);
+
+    void clearForUpdateFlag();
 
     /**
      * 受限于 Java 的半伪泛型，为了编程快乐，特别强制实现获取 泛型类型 的接口。

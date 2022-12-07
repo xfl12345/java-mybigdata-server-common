@@ -30,15 +30,12 @@ public class TableOperationException extends RuntimeException {
 
     protected long affectedRowsCount;
 
-    // public TableOperationException(String message, CURD operation, String tableName) {
-    //     super(message);
-    //     this.operation = operation;
-    //     this.tableName = tableName;
-    // }
+    protected long expectAffectedRowsCount;
 
-    public TableOperationException(String message, long affectedRowsCount, CURD operation, String tableName) {
+    public TableOperationException(String message, long affectedRowsCount, long expectAffectedRowsCount, CURD operation, String tableName) {
         super(message);
         this.affectedRowsCount = affectedRowsCount;
+        this.expectAffectedRowsCount = expectAffectedRowsCount;
         this.operation = operation;
         this.tableName = tableName;
     }
@@ -53,5 +50,9 @@ public class TableOperationException extends RuntimeException {
 
     public long getAffectedRowsCount() {
         return affectedRowsCount;
+    }
+
+    public long getExpectAffectedRowsCount() {
+        return expectAffectedRowsCount;
     }
 }

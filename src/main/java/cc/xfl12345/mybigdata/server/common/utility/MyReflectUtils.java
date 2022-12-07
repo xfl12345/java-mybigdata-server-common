@@ -11,6 +11,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -88,26 +89,26 @@ public class MyReflectUtils {
         return obj;
     }
 
-    public static TreeSet<String> getFieldNamesAsTreeSet(Class<?> cls) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        Object obj = cls.getDeclaredConstructor().newInstance();
-        TreeSet<String> treeSet = new TreeSet<String>();
-        Field[] fields = cls.getDeclaredFields(); // 获取所有成员对象及函数
-        for (Field f : fields) {
-            f.setAccessible(true);// 暴力反射。 私有的也可以被访问。
-            treeSet.add(f.getName());
-        }
-        return treeSet;
+    public static TreeSet<String> getFieldNamesAsTreeSet(Class<?> cls)
+        throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        return getFieldNames(cls, TreeSet::new);
     }
 
-    public static TreeSet<String> getFieldNamesAsArrayList(Class<?> cls) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public static ArrayList<String> getFieldNamesAsArrayList(Class<?> cls)
+        throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        return getFieldNames(cls, ArrayList::new);
+    }
+
+    public static <T extends Collection<String>> T getFieldNames(Class<?> cls, Supplier<T> supplier)
+        throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         Object obj = cls.getDeclaredConstructor().newInstance();
-        TreeSet<String> treeSet = new TreeSet<String>();
+        T collection = supplier.get();
         Field[] fields = cls.getDeclaredFields(); // 获取所有成员对象及函数
         for (Field f : fields) {
             f.setAccessible(true);// 暴力反射。 私有的也可以被访问。
-            treeSet.add(f.getName());
+            collection.add(f.getName());
         }
-        return treeSet;
+        return collection;
     }
 
     public static Class<?> getClassByName(String className) throws ClassNotFoundException {
