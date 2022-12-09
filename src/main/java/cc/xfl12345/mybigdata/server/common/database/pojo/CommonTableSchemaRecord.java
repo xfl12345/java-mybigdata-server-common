@@ -1,5 +1,7 @@
 package cc.xfl12345.mybigdata.server.common.database.pojo;
 
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -8,12 +10,12 @@ import java.io.Serializable;
 */
 @lombok.Data
 public class CommonTableSchemaRecord implements Cloneable, Serializable {
-    private Object globalId;
+    private MbdId<?> globalId;
 
     /**
      * 插表模型名称
      */
-    private Object schemaName;
+    private MbdId<?> schemaName;
 
     /**
      * json_schema 字段的长度

@@ -9,6 +9,7 @@ import cc.xfl12345.mybigdata.server.common.database.error.SqlErrorAnalyst;
 import cc.xfl12345.mybigdata.server.common.pojo.DoubleItem;
 import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,8 +48,8 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public Object insert4IdOrGetId(Value value) {
-        Object id;
+    public MbdId<?> insert4IdOrGetId(Value value) {
+        MbdId<?> id;
         try {
             id = insertAndReturnId(value);
         } catch (RuntimeException e) {
@@ -64,7 +65,7 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public Object insertAndReturnId(Value value) {
+    public MbdId<?> insertAndReturnId(Value value) {
         return dataSourceInterceptorHelper.getInsertAndReturnId().execute(value);
     }
 
@@ -79,17 +80,17 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public Object selectId(Value value) {
+    public MbdId<?> selectId(Value value) {
         return dataSourceInterceptorHelper.getSelectId().execute(value);
     }
 
     @Override
-    public Value selectById(Object globalId) {
+    public Value selectById(MbdId<?> globalId) {
         return dataSourceInterceptorHelper.getSelectById().execute(globalId);
     }
 
     @Override
-    public List<Value> selectBatchById(List<Object> globalIdList) {
+    public List<Value> selectBatchById(List<MbdId<?>> globalIdList) {
         return dataSourceInterceptorHelper.getSelectBatchById().execute(globalIdList);
     }
 
@@ -99,7 +100,7 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public void updateById(Value value, Object globalId) {
+    public void updateById(Value value, MbdId<?> globalId) {
         IdAndValue<Value> idAndValue = new IdAndValue<>();
         idAndValue.id = globalId;
         idAndValue.value = value;
@@ -112,12 +113,12 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public void deleteById(Object globalId) {
+    public void deleteById(MbdId<?> globalId) {
         dataSourceInterceptorHelper.getDeleteById().execute(globalId);
     }
 
     @Override
-    public void deleteBatchById(List<Object> globalIdList) {
+    public void deleteBatchById(List<MbdId<?>> globalIdList) {
         dataSourceInterceptorHelper.getDeleteBatchById().execute(globalIdList);
     }
 

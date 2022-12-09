@@ -1,5 +1,7 @@
 package cc.xfl12345.mybigdata.server.common.data.source;
 
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+
 import java.util.List;
 
 public interface DataSource<Value> {
@@ -9,7 +11,7 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
-    Object insert4IdOrGetId(Value value);
+    MbdId<?> insert4IdOrGetId(Value value);
 
 
     /**
@@ -17,7 +19,7 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
-    Object insertAndReturnId(Value value);
+    MbdId<?> insertAndReturnId(Value value);
 
     /**
      * 插入数据。失败则抛出异常。
@@ -39,21 +41,21 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
-    Object selectId(Value value);
+    MbdId<?> selectId(Value value);
 
-    Value selectById(Object globalId);
+    Value selectById(MbdId<?> globalId);
 
-    List<Value> selectBatchById(List<Object> globalIdList);
+    List<Value> selectBatchById(List<MbdId<?>> globalIdList);
 
 
     default void update(Value theOld, Value theNew) {
-        updateById(theNew, selectById(theOld));
+        updateById(theNew, selectId(theOld));
     }
 
     /**
      * 按 全局ID 更新数据。失败则抛出异常。
      */
-    void updateById(Value value, Object globalId);
+    void updateById(Value value, MbdId<?> globalId);
 
 
     default void delete(Value value) {
@@ -63,9 +65,9 @@ public interface DataSource<Value> {
     /**
      * 按 全局ID 删除数据。失败则抛出异常。
      */
-    void deleteById(Object globalId);
+    void deleteById(MbdId<?> globalId);
 
-    void deleteBatchById(List<Object> globalIdList);
+    void deleteBatchById(List<MbdId<?>> globalIdList);
 
 
     Class<Value> getValueType();

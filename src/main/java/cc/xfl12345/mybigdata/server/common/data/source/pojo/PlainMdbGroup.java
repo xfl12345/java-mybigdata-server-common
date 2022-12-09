@@ -1,14 +1,15 @@
 package cc.xfl12345.mybigdata.server.common.data.source.pojo;
 
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-public class PlainMdbGroup implements MbdGroup {
+public class PlainMdbGroup<ID extends MbdId<?>> implements MbdGroup<ID> {
     @Getter
     @Setter
-    protected Object globalId;
+    protected ID globalId;
 
     @Getter
     @Setter
@@ -20,5 +21,5 @@ public class PlainMdbGroup implements MbdGroup {
 
     @Getter
     @Setter
-    protected List<Object> items;
+    protected List<ID> items;
 }

@@ -6,6 +6,7 @@ import cc.xfl12345.mybigdata.server.common.data.interceptor.type.*;
 import cc.xfl12345.mybigdata.server.common.data.source.DataSource;
 import cc.xfl12345.mybigdata.server.common.pojo.DoubleItem;
 import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
 import lombok.Getter;
 
 import java.lang.reflect.ParameterizedType;
@@ -32,7 +33,7 @@ public class DataSourceInterceptorHelper<Value> {
                 new ActionInterceptorChain<>(null),
                 EnumDataSourceApiName.insert4IdOrGetId,
                 valueType,
-                Object.class
+                MbdId.class
             );
 
         insertAndReturnId =
@@ -40,7 +41,7 @@ public class DataSourceInterceptorHelper<Value> {
                 insertActionInterceptorChain,
                 EnumDataSourceApiName.insertAndReturnId,
                 valueType,
-                Object.class
+                MbdId.class
             );
 
         insert =
@@ -64,14 +65,14 @@ public class DataSourceInterceptorHelper<Value> {
                 selectActionInterceptorChain,
                 EnumDataSourceApiName.selectId,
                 valueType,
-                Object.class
+                MbdId.class
             );
 
         selectById =
             new DataInterceptorChain<>(
                 selectActionInterceptorChain,
                 EnumDataSourceApiName.selectById,
-                Object.class,
+                MbdId.class,
                 valueType
             );
 
@@ -79,7 +80,7 @@ public class DataSourceInterceptorHelper<Value> {
             new DataInterceptorChain<>(
                 selectActionInterceptorChain,
                 EnumDataSourceApiName.selectBatchById,
-                getIdAndValueType(Object.class),
+                getListType(MbdId.class),
                 getListType()
             );
 
@@ -126,7 +127,7 @@ public class DataSourceInterceptorHelper<Value> {
             new DataInterceptorChain<>(
                 deleteActionInterceptorChain,
                 EnumDataSourceApiName.deleteById,
-                Object.class,
+                MbdId.class,
                 Void.class
             );
 
@@ -134,7 +135,7 @@ public class DataSourceInterceptorHelper<Value> {
             new DataInterceptorChain<>(
                 deleteActionInterceptorChain,
                 EnumDataSourceApiName.deleteBatchById,
-                getListType(Object.class),
+                getListType(MbdId.class),
                 Void.class
             );
 
@@ -230,10 +231,10 @@ public class DataSourceInterceptorHelper<Value> {
     }
 
     @Getter
-    protected DataInterceptorChain<Value, Object> insert4IdOrGetId;
+    protected DataInterceptorChain<Value, MbdId<?>> insert4IdOrGetId;
 
     @Getter
-    protected DataInterceptorChain<Value, Object> insertAndReturnId;
+    protected DataInterceptorChain<Value, MbdId<?>> insertAndReturnId;
 
     @Getter
     protected DataInterceptorChain<Value, Long> insert;
@@ -242,13 +243,13 @@ public class DataSourceInterceptorHelper<Value> {
     protected DataInterceptorChain<List<Value>, Long> insertBatch;
 
     @Getter
-    protected DataInterceptorChain<Value, Object> selectId;
+    protected DataInterceptorChain<Value, MbdId<?>> selectId;
 
     @Getter
-    protected DataInterceptorChain<Object, Value> selectById;
+    protected DataInterceptorChain<MbdId<?>, Value> selectById;
 
     @Getter
-    protected DataInterceptorChain<List<Object>, List<Value>> selectBatchById;
+    protected DataInterceptorChain<List<MbdId<?>>, List<Value>> selectBatchById;
 
     @Getter
     protected DataInterceptorChain<DoubleItem<Value, Value>, Void> update;
@@ -260,10 +261,10 @@ public class DataSourceInterceptorHelper<Value> {
     protected DataInterceptorChain<Value, Void> delete;
 
     @Getter
-    protected DataInterceptorChain<Object, Void> deleteById;
+    protected DataInterceptorChain<MbdId<?>, Void> deleteById;
 
     @Getter
-    protected DataInterceptorChain<List<Object>, Void> deleteBatchById;
+    protected DataInterceptorChain<List<MbdId<?>>, Void> deleteBatchById;
 
     public DataInterceptorChain<?, ?> getDataInterceptorManager(EnumDataSourceApiName name) {
         DataInterceptorChain<?, ?> result;

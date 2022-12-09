@@ -66,7 +66,7 @@ publishing {
 }
 
 group = 'cc.xfl12345.mybigdata'
-version = '0.5.1'
+version = '0.6.0'
 sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -184,6 +184,10 @@ dependencies {
     // Java字节码技术工具 byte buddy
     // https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy
     api group: 'net.bytebuddy', name: 'byte-buddy'
+
+    // MongoDB BSON
+    // https://mvnrepository.com/artifact/org.mongodb/bson
+    api group: 'org.mongodb', name: 'bson'
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'

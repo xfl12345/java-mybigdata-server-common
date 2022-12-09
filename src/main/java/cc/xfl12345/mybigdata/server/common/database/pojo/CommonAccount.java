@@ -1,5 +1,7 @@
 package cc.xfl12345.mybigdata.server.common.database.pojo;
 
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -11,7 +13,7 @@ public class CommonAccount implements Cloneable, Serializable {
     /**
      * 账号ID
      */
-    private Object accountId;
+    private MbdId<?> accountId;
 
     /**
      * 账号密码的哈希值
@@ -26,7 +28,7 @@ public class CommonAccount implements Cloneable, Serializable {
     /**
      * 账号额外信息
      */
-    private Object extraInfoId;
+    private MbdId<?> extraInfoId;
 
     @Serial
     private static final long serialVersionUID = 1L;

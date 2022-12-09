@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -50,10 +51,10 @@ public class MyReflectUtils {
         return (T) wrapperClass.getConstructor(String.class).newInstance(value);
     }
 
-//    public static <T> Class<T> getGenericClass(Class<T> cls) throws ReflectiveOperationException {
-//
-//        return cls.getClass();
-//    }
+    @SuppressWarnings("unchecked")
+    public static  <T> Class<T> getGenericTypeFromRuntime(Class<?> cls, int typeArgumentIndex) {
+        return (Class<T>) ((ParameterizedType) cls.getGenericSuperclass()).getActualTypeArguments()[typeArgumentIndex];
+    }
 
     public static Field getFieldByName(Object obj, String FieldName) {
         Field res = null;

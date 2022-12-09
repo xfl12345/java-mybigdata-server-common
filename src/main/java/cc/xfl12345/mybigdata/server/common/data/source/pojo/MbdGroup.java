@@ -1,8 +1,10 @@
 package cc.xfl12345.mybigdata.server.common.data.source.pojo;
 
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+
 import java.util.List;
 
-public interface MbdGroup extends BaseMbdObject {
+public interface MbdGroup<ID extends MbdId<?>> extends BaseMbdObject<ID> {
     String getName();
 
     void setName(String name);
@@ -11,7 +13,7 @@ public interface MbdGroup extends BaseMbdObject {
 
     void setUniqueItems(boolean unique);
 
-    List<Object> getItems();
+    List<ID> getItems();
 
-    void setItems(List<Object> items);
+    void setItems(List<ID> items);
 }

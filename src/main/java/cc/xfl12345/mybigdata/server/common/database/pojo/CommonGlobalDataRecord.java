@@ -1,13 +1,15 @@
 package cc.xfl12345.mybigdata.server.common.database.pojo;
 
 
+import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 @lombok.Data
 public class CommonGlobalDataRecord implements Cloneable, Serializable {
-    private Object id;
+    private MbdId<?> id;
 
     private String uuid;
 
@@ -17,9 +19,9 @@ public class CommonGlobalDataRecord implements Cloneable, Serializable {
 
     private Long modifiedCount;
 
-    private Object tableName;
+    private MbdId<?> tableName;
 
-    private Object description;
+    private MbdId<?> description;
 
     @Serial
     private static final long serialVersionUID = 1L;
