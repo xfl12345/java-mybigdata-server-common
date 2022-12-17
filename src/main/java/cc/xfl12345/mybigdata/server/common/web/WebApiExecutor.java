@@ -1,6 +1,6 @@
 package cc.xfl12345.mybigdata.server.common.web;
 
-import cc.xfl12345.mybigdata.server.common.api.InstanceGenerator;
+import cc.xfl12345.mybigdata.server.common.pojo.InstanceGenerator;
 import cc.xfl12345.mybigdata.server.common.appconst.DefaultSingleton;
 import cc.xfl12345.mybigdata.server.common.appconst.TableCurdResult;
 import cc.xfl12345.mybigdata.server.common.appconst.api.result.JsonApiResult;
