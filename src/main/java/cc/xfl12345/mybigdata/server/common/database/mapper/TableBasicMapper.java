@@ -1,7 +1,8 @@
 package cc.xfl12345.mybigdata.server.common.database.mapper;
 
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface TableBasicMapper<Pojo> {
@@ -21,7 +22,7 @@ public interface TableBasicMapper<Pojo> {
      * 插入数据，返回 全局数据记录表 的 ID
      * @return 全局数据记录表 的 ID
      */
-    MbdId<?> insertAndReturnId(Pojo pojo);
+    MbdId insertAndReturnId(Pojo pojo);
 
     /**
      * 唯一检索，定值查询。给定 POJO ，使用 POJO 内部的值作为筛选条件， 使用 fields 作为获取内容的约束范围。
@@ -45,7 +46,7 @@ public interface TableBasicMapper<Pojo> {
      * @param fields 指定返回的 POJO 哪些字段该有内容
      * @return POJO
      */
-    Pojo selectById(MbdId<?> globalId, String... fields);
+    Pojo selectById(MbdId globalId, String... fields);
 
     /**
      * {@link TableBasicMapper#selectById(MbdId, String...)} 的 批量版
@@ -53,29 +54,29 @@ public interface TableBasicMapper<Pojo> {
      * @param fields 指定返回的 POJO 哪些字段该有内容
      * @return POJO
      */
-    List<Pojo> selectBatchById(List<MbdId<?>> globalIdList, String... fields);
+    LinkedHashMap<MbdId, Pojo> selectBatchById(List<MbdId> globalIdList, String... fields);
 
     /**
      * 给定数据，返回 全局数据记录表 的 ID
      * @return 全局数据记录表 的 ID
      */
-    MbdId<?> selectId(Pojo pojo);
+    MbdId selectId(Pojo pojo);
 
     /**
      * 按 全局ID 更新数据。失败则抛出异常。
      */
-    void updateById(Pojo pojo, MbdId<?> globalId);
+    void updateById(Pojo pojo, MbdId globalId);
 
     /**
      * 按 全局ID 删除数据。失败则抛出异常。
      */
-    void deleteById(MbdId<?> globalId);
+    void deleteById(MbdId globalId);
 
     /**
      * {@link TableBasicMapper#deleteById(MbdId)} 的 批量版
      * @param globalIdList 一些 全局数据记录表 的 ID
      */
-    void deleteBatchById(List<MbdId<?>> globalIdList);
+    void deleteBatchById(List<MbdId> globalIdList);
 
     boolean isForUpdate();
 

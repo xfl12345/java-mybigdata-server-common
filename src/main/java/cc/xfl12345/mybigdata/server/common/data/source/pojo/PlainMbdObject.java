@@ -3,9 +3,9 @@ package cc.xfl12345.mybigdata.server.common.data.source.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Map;
 
-public class PlainMdbGroup implements MbdGroup {
+public class PlainMbdObject implements MbdObject {
     @Getter
     @Setter
     protected MbdId globalId;
@@ -16,9 +16,13 @@ public class PlainMdbGroup implements MbdGroup {
 
     @Getter
     @Setter
-    protected boolean uniqueItems;
+    protected MbdJsonSchema schema;
 
     @Getter
     @Setter
-    protected List<MbdId> items;
+    protected String schemaPath;
+
+    @Getter
+    @Setter
+    protected Map<String, MbdId> map;
 }

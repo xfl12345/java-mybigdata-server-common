@@ -1,17 +1,19 @@
 package cc.xfl12345.mybigdata.server.common.data.source;
 
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+import cc.xfl12345.mybigdata.server.common.appconst.AppDataType;
+import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface DataSource<Value> {
     /**
-     * 获取 数据对象 的 全局数据记录表 的 ID。
+     * 获取 数据对象 的 全局数据记录表 的 ID。优先查询。如果值不存在，再插入。
      * 如果数据不存在，则插入并生成 全局ID ，如果数据存在，则返回其 全局ID 。
      *
      * @return 全局数据记录表 的 ID
      */
-    MbdId<?> insert4IdOrGetId(Value value);
+    MbdId selectIdOrInsert4Id(Value value);
 
 
     /**
@@ -19,7 +21,7 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
-    MbdId<?> insertAndReturnId(Value value);
+    MbdId insertAndReturnId(Value value);
 
     /**
      * 插入数据。失败则抛出异常。
@@ -41,11 +43,13 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
-    MbdId<?> selectId(Value value);
+    MbdId selectId(Value value);
 
-    Value selectById(MbdId<?> globalId);
+    Value selectById(MbdId globalId);
 
-    List<Value> selectBatchById(List<MbdId<?>> globalIdList);
+    LinkedHashMap<Value, MbdId> selectBatchId(List<Value> values);
+
+    LinkedHashMap<MbdId, Value> selectBatchById(List<MbdId> globalIdList);
 
 
     default void update(Value theOld, Value theNew) {
@@ -55,7 +59,7 @@ public interface DataSource<Value> {
     /**
      * 按 全局ID 更新数据。失败则抛出异常。
      */
-    void updateById(Value value, MbdId<?> globalId);
+    void updateById(Value value, MbdId globalId);
 
 
     default void delete(Value value) {
@@ -65,10 +69,11 @@ public interface DataSource<Value> {
     /**
      * 按 全局ID 删除数据。失败则抛出异常。
      */
-    void deleteById(MbdId<?> globalId);
+    void deleteById(MbdId globalId);
 
-    void deleteBatchById(List<MbdId<?>> globalIdList);
+    void deleteBatchById(List<MbdId> globalIdList);
 
+    AppDataType getDataEnumType();
 
     Class<Value> getValueType();
 }

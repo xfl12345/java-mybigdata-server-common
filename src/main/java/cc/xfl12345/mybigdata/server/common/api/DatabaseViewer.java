@@ -9,7 +9,7 @@ public interface DatabaseViewer {
      * 获取 项目涉及到的 数据库表 的名称（原生名称，数据库里的命名，非 ORM 代称）
      * @return 所有表名
      */
-    List<String> getAllTableName();
+    List<String> getAllTableNames();
 
     /**
      * 获取 指定表名 的 所有字段 的 名称（统一驼峰命名法 camelcase）

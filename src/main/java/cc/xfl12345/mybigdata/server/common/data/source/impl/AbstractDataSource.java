@@ -5,16 +5,17 @@ import cc.xfl12345.mybigdata.server.common.appconst.TableCurdResult;
 import cc.xfl12345.mybigdata.server.common.data.interceptor.DataSourceInterceptorHelper;
 import cc.xfl12345.mybigdata.server.common.data.source.DataSource;
 import cc.xfl12345.mybigdata.server.common.data.source.DataSourceWarpper;
+import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 import cc.xfl12345.mybigdata.server.common.database.error.SqlErrorAnalyst;
 import cc.xfl12345.mybigdata.server.common.pojo.DoubleItem;
 import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.ParameterizedType;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public abstract class AbstractDataSource<Value>
@@ -48,14 +49,14 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public MbdId<?> insert4IdOrGetId(Value value) {
-        MbdId<?> id;
+    public MbdId selectIdOrInsert4Id(Value value) {
+        MbdId id;
         try {
-            id = insertAndReturnId(value);
+            id = selectId(value);
         } catch (RuntimeException e) {
             TableCurdResult result = sqlErrorAnalyst.getTableCurdResult(e);
-            if (result.equals(TableCurdResult.DUPLICATE)) {
-                id = selectId(value);
+            if (result.equals(TableCurdResult.FAILED_NOT_FOUND)) {
+                id = insertAndReturnId(value);
             } else {
                 throw e;
             }
@@ -65,7 +66,7 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public MbdId<?> insertAndReturnId(Value value) {
+    public MbdId insertAndReturnId(Value value) {
         return dataSourceInterceptorHelper.getInsertAndReturnId().execute(value);
     }
 
@@ -80,17 +81,22 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public MbdId<?> selectId(Value value) {
+    public MbdId selectId(Value value) {
         return dataSourceInterceptorHelper.getSelectId().execute(value);
     }
 
     @Override
-    public Value selectById(MbdId<?> globalId) {
+    public Value selectById(MbdId globalId) {
         return dataSourceInterceptorHelper.getSelectById().execute(globalId);
     }
 
     @Override
-    public List<Value> selectBatchById(List<MbdId<?>> globalIdList) {
+    public LinkedHashMap<Value, MbdId> selectBatchId(List<Value> values) {
+        return dataSourceInterceptorHelper.getSelectBatchId().execute(values);
+    }
+
+    @Override
+    public LinkedHashMap<MbdId, Value> selectBatchById(List<MbdId> globalIdList) {
         return dataSourceInterceptorHelper.getSelectBatchById().execute(globalIdList);
     }
 
@@ -100,7 +106,7 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public void updateById(Value value, MbdId<?> globalId) {
+    public void updateById(Value value, MbdId globalId) {
         IdAndValue<Value> idAndValue = new IdAndValue<>();
         idAndValue.id = globalId;
         idAndValue.value = value;
@@ -113,12 +119,12 @@ public abstract class AbstractDataSource<Value>
     }
 
     @Override
-    public void deleteById(MbdId<?> globalId) {
+    public void deleteById(MbdId globalId) {
         dataSourceInterceptorHelper.getDeleteById().execute(globalId);
     }
 
     @Override
-    public void deleteBatchById(List<MbdId<?>> globalIdList) {
+    public void deleteBatchById(List<MbdId> globalIdList) {
         dataSourceInterceptorHelper.getDeleteBatchById().execute(globalIdList);
     }
 

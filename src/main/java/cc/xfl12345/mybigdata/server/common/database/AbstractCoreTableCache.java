@@ -3,7 +3,7 @@ package cc.xfl12345.mybigdata.server.common.database;
 import cc.xfl12345.mybigdata.server.common.appconst.DefaultSingleton;
 import cc.xfl12345.mybigdata.server.common.database.error.TableDataException;
 import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 import cc.xfl12345.mybigdata.server.common.pojo.TwoWayMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,13 +18,13 @@ public abstract class AbstractCoreTableCache<ID, Value> {
     protected FieldNotNullChecker fieldNotNullChecker = DefaultSingleton.FIELD_NOT_NULL_CHECKER;
 
     @Getter
-    protected TwoWayMap<Value, MbdId<ID>> tableNameCache;
+    protected TwoWayMap<Value, MbdId> tableNameCache;
 
     @Getter
-    protected MbdId<ID> idOfTrue;
+    protected MbdId idOfTrue;
 
     @Getter
-    protected MbdId<ID> idOfFalse;
+    protected MbdId idOfFalse;
 
     @PostConstruct
     public void init() throws Exception {
@@ -40,7 +40,7 @@ public abstract class AbstractCoreTableCache<ID, Value> {
 
     protected abstract String tableNameOfBoolean();
 
-    public boolean getBooleanById(MbdId<ID> globalId) {
+    public boolean getBooleanById(MbdId globalId) {
         if (idOfTrue.equals(globalId)) {
             return true;
         }
@@ -50,14 +50,14 @@ public abstract class AbstractCoreTableCache<ID, Value> {
 
         throw new TableDataException(
             "The reference of id '" + globalId + "' is not a boolean value.",
-            new MbdId<?>[]{ globalId },
+            new MbdId[]{ globalId },
             tableNameOfBoolean()
         );
     }
 
-    public abstract MbdId<ID> getTableNameId(Class<?> pojoClass);
+    public abstract MbdId getTableNameId(Class<?> pojoClass);
 
-    public abstract <ID2 extends MbdId<ID>> Class<?> getPojoClassByTableNameId(ID2 id);
+    public abstract Class<?> getPojoClassByTableNameId(MbdId id);
 
     public abstract <T> T getEmptyPoEntity(Class<T> pojoClass);
 }

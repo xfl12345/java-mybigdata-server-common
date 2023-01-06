@@ -122,7 +122,7 @@ dependencies {
         // testRuntimeClasspath platform(myDependencyParent)
     }
 
-    String depsParentVersion = '0.0.8'
+    String depsParentVersion = '0.0.10'
     if (isLocalDevMode) {
         applyPlatform2All(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
     } else {
@@ -164,6 +164,9 @@ dependencies {
     // JSON support
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     api group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+
+    // // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-jsonSchema
+    // api group: 'com.fasterxml.jackson.module', name: 'jackson-module-jsonSchema'
 
     // JSON Schema support
     // https://mvnrepository.com/artifact/com.networknt/json-schema-validator

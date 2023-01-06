@@ -7,5 +7,6 @@ public enum AppDataType {
     Number,
     Array,
     Object,
-    JsonSchema
+    JsonSchema,
+    Id
 }

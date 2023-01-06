@@ -26,7 +26,7 @@ public class ActionInterceptorChain<T extends CurdTypeGetter> {
     /**
      * 在执行操作之前，先处理一些事情。如果返回 false。则表示终止此次操作。
      */
-    public boolean beforeAction(EnumDataSourceApiName apiName, TypeAndObject param) {
+    public boolean beforeAction(String apiName, TypeAndObject param) {
         for (ActionInterceptor<T> interceptor : actionInterceptors) {
             if (!interceptor.beforeAction(apiName, param)) {
                 return false;
@@ -44,7 +44,7 @@ public class ActionInterceptorChain<T extends CurdTypeGetter> {
      * @param actionOutputData 返回值
      * @return 如果返回 false 则表示拦截此操作的返回值，如果返回 true 则表示正常返回 actionOutputData
      */
-    public boolean afterAction(EnumDataSourceApiName apiName, TypeAndObject actionInputData, TypeAndObject actionOutputData) {
+    public boolean afterAction(String apiName, TypeAndObject actionInputData, TypeAndObject actionOutputData) {
         for (ActionInterceptor<T> interceptor : actionInterceptors) {
             if (!interceptor.afterAction(apiName, actionInputData, actionOutputData)) {
                 return false;

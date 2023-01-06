@@ -1,6 +1,6 @@
 package cc.xfl12345.mybigdata.server.common.database.error;
 
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 
 public class TableDataException extends RuntimeException {
     public TableDataException() {
@@ -24,17 +24,17 @@ public class TableDataException extends RuntimeException {
 
     protected String tableName;
 
-    protected MbdId<?>[] globalIds;
+    protected MbdId[] globalIds;
 
     protected String[] uuids;
 
-    public TableDataException(String message, MbdId<?>[] globalIds, String tableName) {
+    public TableDataException(String message, MbdId[] globalIds, String tableName) {
         super(message);
         this.globalIds = globalIds;
         this.tableName = tableName;
     }
 
-    public TableDataException(String message, MbdId<?>[] globalIds, String[] uuids, String tableName) {
+    public TableDataException(String message, MbdId[] globalIds, String[] uuids, String tableName) {
         super(message);
         this.globalIds = globalIds;
         this.uuids = uuids;

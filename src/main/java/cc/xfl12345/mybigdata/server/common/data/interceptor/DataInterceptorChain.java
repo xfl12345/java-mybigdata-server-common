@@ -13,7 +13,7 @@ public class DataInterceptorChain<T, R> {
     protected final ActionInterceptorChain<?> actionInterceptors;
     protected Function<T, R> defaultAction = (value) -> null;
 
-    protected EnumDataSourceApiName name;
+    protected String name;
 
     protected Type paramType;
 
@@ -27,6 +27,14 @@ public class DataInterceptorChain<T, R> {
     public DataInterceptorChain(
         ActionInterceptorChain<?> actionInterceptors,
         EnumDataSourceApiName name,
+        Type paramType,
+        Type returnType) {
+        this(actionInterceptors, name.name(), paramType, returnType);
+    }
+
+    public DataInterceptorChain(
+        ActionInterceptorChain<?> actionInterceptors,
+        String name,
         Type paramType,
         Type returnType) {
         this.actionInterceptors = actionInterceptors;

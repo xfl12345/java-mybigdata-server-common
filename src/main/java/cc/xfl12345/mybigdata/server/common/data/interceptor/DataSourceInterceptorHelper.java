@@ -6,11 +6,12 @@ import cc.xfl12345.mybigdata.server.common.data.interceptor.type.*;
 import cc.xfl12345.mybigdata.server.common.data.source.DataSource;
 import cc.xfl12345.mybigdata.server.common.pojo.DoubleItem;
 import cc.xfl12345.mybigdata.server.common.pojo.IdAndValue;
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
+import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 import lombok.Getter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class DataSourceInterceptorHelper<Value> {
@@ -28,10 +29,10 @@ public class DataSourceInterceptorHelper<Value> {
     public void init(DataSource<Value> dataSource) {
         valueType = dataSource.getValueType();
 
-        insert4IdOrGetId =
+        selectIdOrInsert4Id =
             new DataInterceptorChain<>(
                 new ActionInterceptorChain<>(null),
-                EnumDataSourceApiName.insert4IdOrGetId,
+                EnumDataSourceApiName.selectIdOrInsert4Id,
                 valueType,
                 MbdId.class
             );
@@ -76,12 +77,50 @@ public class DataSourceInterceptorHelper<Value> {
                 valueType
             );
 
+        selectBatchId =
+            new DataInterceptorChain<>(
+                selectActionInterceptorChain,
+                EnumDataSourceApiName.selectBatchId,
+                getListType(),
+                new ParameterizedType() {
+                    @Override
+                    public Type[] getActualTypeArguments() {
+                        return new Type[] {valueType, MbdId.class};
+                    }
+
+                    @Override
+                    public Type getRawType() {
+                        return LinkedHashMap.class;
+                    }
+
+                    @Override
+                    public Type getOwnerType() {
+                        return null;
+                    }
+                }
+            );
+
         selectBatchById =
             new DataInterceptorChain<>(
                 selectActionInterceptorChain,
                 EnumDataSourceApiName.selectBatchById,
                 getListType(MbdId.class),
-                getListType()
+                new ParameterizedType() {
+                    @Override
+                    public Type[] getActualTypeArguments() {
+                        return new Type[] {MbdId.class, valueType};
+                    }
+
+                    @Override
+                    public Type getRawType() {
+                        return LinkedHashMap.class;
+                    }
+
+                    @Override
+                    public Type getOwnerType() {
+                        return null;
+                    }
+                }
             );
 
         update =
@@ -139,7 +178,7 @@ public class DataSourceInterceptorHelper<Value> {
                 Void.class
             );
 
-        insert4IdOrGetId.setDefaultAction(dataSource::insert4IdOrGetId);
+        selectIdOrInsert4Id.setDefaultAction(dataSource::selectIdOrInsert4Id);
         insertAndReturnId.setDefaultAction(dataSource::insertAndReturnId);
         insert.setDefaultAction(dataSource::insert);
         insertBatch.setDefaultAction(dataSource::insertBatch);
@@ -231,10 +270,10 @@ public class DataSourceInterceptorHelper<Value> {
     }
 
     @Getter
-    protected DataInterceptorChain<Value, MbdId<?>> insert4IdOrGetId;
+    protected DataInterceptorChain<Value, MbdId> selectIdOrInsert4Id;
 
     @Getter
-    protected DataInterceptorChain<Value, MbdId<?>> insertAndReturnId;
+    protected DataInterceptorChain<Value, MbdId> insertAndReturnId;
 
     @Getter
     protected DataInterceptorChain<Value, Long> insert;
@@ -243,13 +282,16 @@ public class DataSourceInterceptorHelper<Value> {
     protected DataInterceptorChain<List<Value>, Long> insertBatch;
 
     @Getter
-    protected DataInterceptorChain<Value, MbdId<?>> selectId;
+    protected DataInterceptorChain<Value, MbdId> selectId;
 
     @Getter
-    protected DataInterceptorChain<MbdId<?>, Value> selectById;
+    protected DataInterceptorChain<MbdId, Value> selectById;
 
     @Getter
-    protected DataInterceptorChain<List<MbdId<?>>, List<Value>> selectBatchById;
+    protected DataInterceptorChain<List<Value>, LinkedHashMap<Value, MbdId>> selectBatchId;
+
+    @Getter
+    protected DataInterceptorChain<List<MbdId>, LinkedHashMap<MbdId, Value>> selectBatchById;
 
     @Getter
     protected DataInterceptorChain<DoubleItem<Value, Value>, Void> update;
@@ -261,20 +303,21 @@ public class DataSourceInterceptorHelper<Value> {
     protected DataInterceptorChain<Value, Void> delete;
 
     @Getter
-    protected DataInterceptorChain<MbdId<?>, Void> deleteById;
+    protected DataInterceptorChain<MbdId, Void> deleteById;
 
     @Getter
-    protected DataInterceptorChain<List<MbdId<?>>, Void> deleteBatchById;
+    protected DataInterceptorChain<List<MbdId>, Void> deleteBatchById;
 
     public DataInterceptorChain<?, ?> getDataInterceptorManager(EnumDataSourceApiName name) {
         DataInterceptorChain<?, ?> result;
         switch (name) {
-            case insert4IdOrGetId -> result = insert4IdOrGetId;
+            case selectIdOrInsert4Id -> result = selectIdOrInsert4Id;
             case insertAndReturnId -> result = insertAndReturnId;
             case insert -> result = insert;
             case insertBatch -> result = insertBatch;
             case selectId -> result = selectId;
             case selectById -> result = selectById;
+            case selectBatchId -> result = selectBatchId;
             case selectBatchById -> result = selectBatchById;
             case update -> result = update;
             case updateById -> result = updateById;

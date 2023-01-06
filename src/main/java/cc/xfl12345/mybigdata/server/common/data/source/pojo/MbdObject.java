@@ -1,19 +1,17 @@
 package cc.xfl12345.mybigdata.server.common.data.source.pojo;
 
-import cc.xfl12345.mybigdata.server.common.pojo.MbdId;
-
 import java.util.Map;
 
-public interface MbdObject<ID extends MbdId<?>> extends BaseMbdObject<ID> {
-    MbdJsonSchema<ID> getReactiveJsonSchema();
+public interface MbdObject extends MbdCollection {
+    MbdJsonSchema getSchema();
 
-    void setReactiveJsonSchema(MbdJsonSchema<ID> reactiveJsonSchema);
+    void setSchema(MbdJsonSchema reactiveJsonSchema);
 
-    String getName();
+    String getSchemaPath();
 
-    void setName(String name);
+    void setSchemaPath(String schemaPath);
 
-    Map<String, Object> getMap();
+    Map<String, MbdId> getMap();
 
-    void setMap(Map<String, Object> map);
+    void setMap(Map<String, MbdId> map);
 }
