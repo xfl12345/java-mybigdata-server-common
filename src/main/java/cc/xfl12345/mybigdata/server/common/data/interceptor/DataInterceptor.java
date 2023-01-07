@@ -1,17 +1,15 @@
 package cc.xfl12345.mybigdata.server.common.data.interceptor;
 
 
-import cc.xfl12345.mybigdata.server.common.appconst.data.EnumDataSourceApiName;
+public class DataInterceptor {
+    protected String apiName;
 
-public class DataInterceptor<T, R> {
-    protected EnumDataSourceApiName name;
-
-    public EnumDataSourceApiName getName() {
-        return name;
+    public String getApiName() {
+        return apiName;
     }
 
-    public DataInterceptor(EnumDataSourceApiName name) {
-        this.name = name;
+    public DataInterceptor(String apiName) {
+        this.apiName = apiName;
     }
 
     protected boolean shouldBranch = false;
@@ -27,14 +25,14 @@ public class DataInterceptor<T, R> {
     /**
      * 在执行操作之前，先处理一些事情。如果返回 false。则不继续冒泡，并判断是否执行分支操作。
      */
-    public boolean beforeAction(T param) {
+    public boolean beforeAction(Object[] param) {
         return true;
     }
 
     /**
      * 分支操作。
      */
-    public R branchAction(T param) {
+    public Object branchAction(Object[] param) {
         return null;
     }
 
@@ -44,6 +42,6 @@ public class DataInterceptor<T, R> {
      * @param actionInputData  传入参数
      * @param actionOutputData 返回值
      */
-    public void afterAction(T actionInputData, R actionOutputData) {
+    public void afterAction(Object[] actionInputData, Object actionOutputData) {
     }
 }

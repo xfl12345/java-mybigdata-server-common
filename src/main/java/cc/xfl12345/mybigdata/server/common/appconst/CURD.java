@@ -4,5 +4,6 @@ public enum CURD {
     CREATE,
     UPDATE,
     RETRIEVE,
-    DELETE
+    DELETE,
+    NULL
 }

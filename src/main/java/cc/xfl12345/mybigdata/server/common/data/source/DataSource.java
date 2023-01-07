@@ -1,6 +1,9 @@
 package cc.xfl12345.mybigdata.server.common.data.source;
 
 import cc.xfl12345.mybigdata.server.common.appconst.AppDataType;
+import cc.xfl12345.mybigdata.server.common.appconst.CURD;
+import cc.xfl12345.mybigdata.server.common.data.DataSourceApi;
+import cc.xfl12345.mybigdata.server.common.data.interceptor.InterceptorManager;
 import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 
 import java.util.LinkedHashMap;
@@ -13,6 +16,7 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
+    @DataSourceApi
     MbdId selectIdOrInsert4Id(Value value);
 
 
@@ -21,6 +25,7 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
+    @DataSourceApi(curdType = CURD.CREATE)
     MbdId insertAndReturnId(Value value);
 
     /**
@@ -28,6 +33,7 @@ public interface DataSource<Value> {
      *
      * @return 影响行数
      */
+    @DataSourceApi(curdType = CURD.CREATE)
     long insert(Value value);
 
     /**
@@ -35,6 +41,7 @@ public interface DataSource<Value> {
      *
      * @return 影响行数
      */
+    @DataSourceApi(curdType = CURD.CREATE)
     long insertBatch(List<Value> values);
 
 
@@ -43,15 +50,20 @@ public interface DataSource<Value> {
      *
      * @return 全局数据记录表 的 ID
      */
+    @DataSourceApi(curdType = CURD.RETRIEVE)
     MbdId selectId(Value value);
 
+    @DataSourceApi(curdType = CURD.RETRIEVE)
     Value selectById(MbdId globalId);
 
+    @DataSourceApi(curdType = CURD.RETRIEVE)
     LinkedHashMap<Value, MbdId> selectBatchId(List<Value> values);
 
+    @DataSourceApi(curdType = CURD.RETRIEVE)
     LinkedHashMap<MbdId, Value> selectBatchById(List<MbdId> globalIdList);
 
 
+    @DataSourceApi(curdType = CURD.UPDATE)
     default void update(Value theOld, Value theNew) {
         updateById(theNew, selectId(theOld));
     }
@@ -59,9 +71,11 @@ public interface DataSource<Value> {
     /**
      * 按 全局ID 更新数据。失败则抛出异常。
      */
+    @DataSourceApi(curdType = CURD.UPDATE)
     void updateById(Value value, MbdId globalId);
 
 
+    @DataSourceApi(curdType = CURD.DELETE)
     default void delete(Value value) {
         deleteById(selectId(value));
     }
@@ -69,11 +83,15 @@ public interface DataSource<Value> {
     /**
      * 按 全局ID 删除数据。失败则抛出异常。
      */
+    @DataSourceApi(curdType = CURD.DELETE)
     void deleteById(MbdId globalId);
 
+    @DataSourceApi(curdType = CURD.DELETE)
     void deleteBatchById(List<MbdId> globalIdList);
 
     AppDataType getDataEnumType();
 
     Class<Value> getValueType();
+
+    InterceptorManager getInterceptorManager();
 }
