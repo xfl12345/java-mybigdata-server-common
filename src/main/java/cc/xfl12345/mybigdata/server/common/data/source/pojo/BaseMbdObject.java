@@ -1,11 +1,9 @@
 package cc.xfl12345.mybigdata.server.common.data.source.pojo;
 
-import javax.annotation.PreDestroy;
+import cc.xfl12345.mybigdata.server.common.appconst.AppDataType;
 
 public interface BaseMbdObject {
-    @PreDestroy
-    default void destoryInstance() {
-    }
-
     MbdId getGlobalId();
+
+    AppDataType getDataType();
 }

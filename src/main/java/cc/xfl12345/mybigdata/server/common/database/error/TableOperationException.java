@@ -4,26 +4,6 @@ package cc.xfl12345.mybigdata.server.common.database.error;
 import cc.xfl12345.mybigdata.server.common.appconst.CURD;
 
 public class TableOperationException extends RuntimeException {
-    public TableOperationException() {
-    }
-
-    public TableOperationException(String message) {
-        super(message);
-    }
-
-    public TableOperationException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public TableOperationException(Throwable cause) {
-        super(cause);
-    }
-
-    public TableOperationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-
     protected CURD operation;
 
     protected String tableName;

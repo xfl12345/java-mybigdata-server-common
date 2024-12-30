@@ -16,4 +16,15 @@ public class PlainMbdJsonSchema implements MbdJsonSchema {
     @Getter
     @Setter
     protected JsonSchema jsonSchema;
+
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (obj instanceof MbdJsonSchema mbdJsonSchema) {
+    //         return getGlobalId().equals(mbdJsonSchema.getGlobalId()) &&
+    //             getName().equals(mbdJsonSchema.getName()) &&
+    //             getJsonSchema().getSchemaNode().equals(mbdJsonSchema.getJsonSchema().getSchemaNode());
+    //     }
+    //
+    //     return false;
+    // }
 }

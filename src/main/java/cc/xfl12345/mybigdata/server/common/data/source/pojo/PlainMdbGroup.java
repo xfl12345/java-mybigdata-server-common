@@ -14,11 +14,16 @@ public class PlainMdbGroup implements MbdGroup {
     @Setter
     protected String name;
 
-    @Getter
     @Setter
-    protected boolean uniqueItems;
+    protected Boolean uniqueItems;
+
+    @Override
+    public Boolean isUniqueItems() {
+        return uniqueItems;
+    }
 
     @Getter
     @Setter
     protected List<MbdId> items;
+
 }

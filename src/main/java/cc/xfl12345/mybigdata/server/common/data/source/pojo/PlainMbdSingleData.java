@@ -3,7 +3,7 @@ package cc.xfl12345.mybigdata.server.common.data.source.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-public class PlainMbdSingleData<Value> implements MbdSingleData<Value> {
+public abstract class PlainMbdSingleData<Value> implements MbdSingleData<Value> {
     @Getter
     @Setter
     protected MbdId globalId;

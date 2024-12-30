@@ -5,7 +5,7 @@ import cc.xfl12345.mybigdata.server.common.appconst.DefaultSingleton;
 import cc.xfl12345.mybigdata.server.common.appconst.TableCurdResult;
 import cc.xfl12345.mybigdata.server.common.appconst.api.result.JsonApiResult;
 import cc.xfl12345.mybigdata.server.common.database.error.SqlErrorAnalyst;
-import cc.xfl12345.mybigdata.server.common.database.error.TableDataException;
+import cc.xfl12345.mybigdata.server.common.database.error.IllegalDataException;
 import cc.xfl12345.mybigdata.server.common.database.error.TableOperationException;
 import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import cc.xfl12345.mybigdata.server.common.web.pojo.response.JsonApiResponseData;
@@ -13,8 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -38,24 +38,24 @@ public class WebApiExecutor {
     }
 
     public  <Param> JsonApiResponseData handle(
-        HttpServletResponse httpServletResponse,
+        HttpServletRequest httpServletRequest,
         Param param,
         Function<Param, Object> action) {
-        return handleImpl(httpServletResponse, param, action);
+        return handleImpl(httpServletRequest, param, action);
     }
 
     public  <Param> JsonApiResponseData handle(
-        HttpServletResponse httpServletResponse,
+        HttpServletRequest httpServletRequest,
         Param param,
         Consumer<Param> action) {
-        return handle(httpServletResponse, param, (theParam) -> {
+        return handle(httpServletRequest, param, (theParam) -> {
             action.accept(theParam);
             return null;
         });
     }
 
     protected <Param> JsonApiResponseData handleImpl(
-        HttpServletResponse httpServletResponse,
+        HttpServletRequest httpServletRequest,
         Param param,
         Function<Param, Object> action) {
         JsonApiResponseData responseData = responseDataInstanceGenerator.getNewInstance();
@@ -63,14 +63,14 @@ public class WebApiExecutor {
             responseData.setData(action.apply(param));
             responseData.setApiResult(JsonApiResult.SUCCEED);
         } catch (Exception e) {
-            onError(httpServletResponse, param, responseData, e);
+            onError(httpServletRequest, param, responseData, e);
         }
 
         return responseData;
     }
 
     protected <Param> void onError(
-        HttpServletResponse httpServletResponse,
+        HttpServletRequest httpServletRequest,
         Param param,
         JsonApiResponseData responseData,
         Exception exception) {
@@ -78,21 +78,17 @@ public class WebApiExecutor {
             if (e.getAffectedRowsCount() == 0) {
                 switch (e.getOperation()) {
                     case UPDATE, DELETE, RETRIEVE -> {
-                        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         responseData.setApiResult(JsonApiResult.FAILED_NOT_FOUND);
                     }
                     case CREATE -> {
-                        httpServletResponse.setStatus(HttpServletResponse.SC_GONE);
                         responseData.setApiResult(JsonApiResult.FAILED);
                     }
                 }
             } else {
-                httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 responseData.setApiResult(JsonApiResult.FAILED_FORBIDDEN);
                 responseData.setMessage(e.getMessage());
             }
-        } else if (exception instanceof TableDataException e) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        } else if (exception instanceof IllegalDataException e) {
             responseData.setApiResult(JsonApiResult.FAILED_FORBIDDEN);
             responseData.setMessage(e.getMessage());
         } else {
@@ -102,7 +98,6 @@ public class WebApiExecutor {
                 responseData.setMessage(curdResult.name());
             } else {
                 log.warn(exception.getMessage(), exception);
-                httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 responseData.setApiResult(JsonApiResult.OTHER_FAILED);
             }
         }

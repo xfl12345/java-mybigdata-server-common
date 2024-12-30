@@ -2,7 +2,7 @@ package cc.xfl12345.mybigdata.server.common.pojo;
 
 import lombok.Getter;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;

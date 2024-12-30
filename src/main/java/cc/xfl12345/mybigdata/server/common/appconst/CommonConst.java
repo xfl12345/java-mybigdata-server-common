@@ -5,4 +5,5 @@ public class CommonConst {
     public static final String ABOUT_BLANK_URL = "about:blank?";
     public static final int SHA_512_HEX_STR_LENGTH = 128;
     public static final String ANONYMOUS = "anonymous";
+    public static final Long LONG_ZERO = 0L;
 }

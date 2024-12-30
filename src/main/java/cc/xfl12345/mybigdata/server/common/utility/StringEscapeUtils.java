@@ -3,14 +3,14 @@ package cc.xfl12345.mybigdata.server.common.utility;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import java.util.*;
 
 public class StringEscapeUtils {
 
-    public static final HashMap<String, HashMap<Character, byte[]>> byteMapper = new HashMap<>();
+    protected static final Map<String, Map<Character, byte[]>> byteMapper = new HashMap<>();
     // charset名称 -> (Java 字符串 -> 转义字符串)
-    public static final HashMap<String, HashMap<Character, String>> urlEscapeMapper = new HashMap<>();
-    public static final HashMap<String, HashMap<Character, String>> sqlEscape4LikeMapper = new HashMap<>();
+    protected static final Map<String, Map<Character, String>> urlEscapeMapper = new HashMap<>();
+    protected static final Map<String, Map<Character, String>> sqlEscape4LikeMapper = new HashMap<>();
 
     static {
         char[] charList = "()`~!@#$%^&*-_+=|{}[]:;'<>,.? /".toCharArray();
@@ -42,8 +42,20 @@ public class StringEscapeUtils {
         sqlEscape4LikeMapper.put("mysql", mysqlEscape4LikeMapper);
     }
 
-    public static String escapeBracketsOnly4URL(String content) {
-        HashMap<Character, String> charMapper = urlEscapeMapper.get(StandardCharsets.ISO_8859_1.name());
+    public static Map<String, Map<Character, byte[]>> getByteMapper() {
+        return Collections.unmodifiableMap(byteMapper);
+    }
+
+    public static Map<String, Map<Character, String>> getUrlEscapeMapper() {
+        return Collections.unmodifiableMap(urlEscapeMapper);
+    }
+
+    public static Map<String, Map<Character, String>> getSqlEscape4LikeMapper() {
+        return Collections.unmodifiableMap(sqlEscape4LikeMapper);
+    }
+
+    public static String escapeURL(String content, Set<Character> excludeCharacters) {
+        Map<Character, String> charMapper = urlEscapeMapper.get(StandardCharsets.UTF_8.name());
         if (charMapper == null || "".equals(content)) {
             return content;
         }
@@ -51,16 +63,17 @@ public class StringEscapeUtils {
         StringBuilder stringBuilder = new StringBuilder(originContentLength << 1);
         for (int i = 0; i < originContentLength; i++) {
             char currChar = content.charAt(i);
-            switch (currChar) {
-                case '[', ']', '{', '}' -> stringBuilder.append(charMapper.get(currChar));
-                default -> stringBuilder.append(currChar);
+            if (excludeCharacters.contains(currChar)) {
+                stringBuilder.append(currChar);
+            } else {
+                stringBuilder.append(URLEncoder.encode(String.valueOf(currChar), StandardCharsets.UTF_8).toLowerCase(Locale.ROOT));
             }
         }
         return stringBuilder.toString();
     }
 
     public static String escapeSql4Like(String sqlDialect, String content) {
-        HashMap<Character, String> charMapper = sqlEscape4LikeMapper.get(sqlDialect);
+        Map<Character, String> charMapper = sqlEscape4LikeMapper.get(sqlDialect);
         if (charMapper == null || "".equals(content)) {
             return content;
         }

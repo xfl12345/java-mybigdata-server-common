@@ -10,7 +10,7 @@ import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.lang.reflect.ParameterizedType;
 
 public abstract class AbstractDataSource<Value> implements DataSource<Value> {

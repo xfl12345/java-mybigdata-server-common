@@ -1,15 +1,15 @@
 package cc.xfl12345.mybigdata.server.common.database;
 
 import cc.xfl12345.mybigdata.server.common.appconst.DefaultSingleton;
-import cc.xfl12345.mybigdata.server.common.database.error.TableDataException;
-import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
+import cc.xfl12345.mybigdata.server.common.database.error.IllegalDataException;
+import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import cc.xfl12345.mybigdata.server.common.pojo.TwoWayMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 @Slf4j
 public abstract class AbstractCoreTableCache<ID, Value> {
@@ -26,6 +26,9 @@ public abstract class AbstractCoreTableCache<ID, Value> {
     @Getter
     protected MbdId idOfFalse;
 
+    @Getter
+    protected MbdId idOfNull;
+
     @PostConstruct
     public void init() throws Exception {
         refreshBooleanCache();
@@ -36,9 +39,9 @@ public abstract class AbstractCoreTableCache<ID, Value> {
 
     public abstract void refreshBooleanCache() throws Exception;
 
-    public abstract void refreshCoreTableNameCache() throws Exception;
+    public abstract void refreshNullCache() throws Exception;
 
-    protected abstract String tableNameOfBoolean();
+    public abstract void refreshCoreTableNameCache() throws Exception;
 
     public boolean getBooleanById(MbdId globalId) {
         if (idOfTrue.equals(globalId)) {
@@ -48,10 +51,9 @@ public abstract class AbstractCoreTableCache<ID, Value> {
             return false;
         }
 
-        throw new TableDataException(
+        throw new IllegalDataException(
             "The reference of id '" + globalId + "' is not a boolean value.",
-            new MbdId[]{ globalId },
-            tableNameOfBoolean()
+            new MbdId[]{globalId}
         );
     }
 

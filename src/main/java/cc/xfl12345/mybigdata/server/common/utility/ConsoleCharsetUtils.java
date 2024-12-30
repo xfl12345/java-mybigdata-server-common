@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;

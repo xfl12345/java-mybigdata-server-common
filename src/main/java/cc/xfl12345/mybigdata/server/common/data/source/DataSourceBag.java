@@ -10,7 +10,7 @@ import cc.xfl12345.mybigdata.server.common.pojo.FieldNotNullChecker;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.HashMap;
 

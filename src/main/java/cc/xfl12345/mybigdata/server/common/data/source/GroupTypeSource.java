@@ -5,7 +5,7 @@ import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdGroup;
 import cc.xfl12345.mybigdata.server.common.data.source.pojo.MbdId;
 import cc.xfl12345.mybigdata.server.common.pojo.ReactiveMode;
 
-public interface GroupTypeSource extends DataSource<MbdGroup> {
+public interface GroupTypeSource extends MbdTypeDataSource<MbdGroup> {
     MbdGroup getReactiveMbdGroup(MbdId globalId, ReactiveMode mode);
 
     @Override
