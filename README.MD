@@ -1,4 +1,3 @@
-# 注意事项
+# MyBigData JAVA版服务端 通用库
 
-+ 编译
-  如果要编译 javadoc ，系统环境需要设置 JAVA_TOOL_OPTIONS 为 "-Dfile.encoding=UTF-8"
+迁移至 `https://github.com/xfl12345/MyBigData/server/java/server-common`
